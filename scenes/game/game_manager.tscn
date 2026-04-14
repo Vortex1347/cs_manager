@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://csmanager_game"]
+
+[ext_resource type="Script" path="res://scripts/game/game_manager.gd" id="1_gm"]
+[ext_resource type="Script" path="res://scripts/game/round_manager.gd" id="2_rm"]
+
+[node name="GameManager" type="Node3D"]
+script = ExtResource("1_gm")
+
+[node name="MainCamera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.866, 0, -0.866, 0.5, 0, 45, 25)
+projection = 1
+size = 50.0
+near = 0.1
+far = 500.0
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866, -0.354, 0.354, 0, 0.707, 0.707, -0.5, -0.612, 0.612, 0, 20, 0)
+light_energy = 0.8
+shadow_enabled = true
+
+[node name="AmbientFill" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866, -0.354, -0.354, 0, 0.707, -0.707, 0.5, -0.612, 0.612, 0, 10, 0)
+light_energy = 0.3
+shadow_enabled = false
+
+[node name="TeamCT" type="Node" parent="."]
+
+[node name="TeamT" type="Node" parent="."]
+
+[node name="RoundManager" type="Node" parent="."]
+script = ExtResource("2_rm")
+
+[node name="Economy" type="Node" parent="."]
+
+[node name="HUD" type="CanvasLayer" parent="."]
