@@ -1,0 +1,5 @@
+res://scenes/maps/box_map.tscn
+res://scripts/game/game_manager.gd
+res://scenes/game/game_manager.tscn
+res://scripts/bots/bot_brain.gd
+res://scripts/ui/pause_controller.gd
