@@ -18,6 +18,7 @@ const MAX_ROUNDS: int = 30
 @onready var economy: Node = $Economy
 @onready var team_ct: Node = $TeamCT
 @onready var team_t: Node = $TeamT
+@onready var box_map: Node3D = $BoxMap
 var team_ct_script: BotTeam
 var team_t_script: BotTeam
 @onready var camera: Camera3D = $MainCamera
@@ -31,8 +32,40 @@ var match_active: bool = false
 func _ready() -> void:
 	_ensure_team_scripts()
 	_assign_bot_stats()
+	_setup_bots()
 	_wire_systems()
 	start_match()
+
+func _setup_bots() -> void:
+	var spawn_root: Node3D = box_map.get_node_or_null("SpawnPoints") if box_map else null
+	var ct_waypoints: Array[Vector3] = []
+	var t_waypoints: Array[Vector3] = []
+	if spawn_root:
+		for i in range(1, 6):
+			var ct_m = spawn_root.get_node_or_null("CT_Spawn_%d" % i)
+			if ct_m:
+				ct_waypoints.append(ct_m.global_position)
+			var t_m = spawn_root.get_node_or_null("T_Spawn_%d" % i)
+			if t_m:
+				t_waypoints.append(t_m.global_position)
+
+	var ct_idx: int = 0
+	for bot in team_ct.get_children():
+		if not bot.has_method("start_round"):
+			continue
+		if ct_idx < ct_waypoints.size():
+			bot.global_position = ct_waypoints[ct_idx]
+		bot.set_patrol_waypoints(ct_waypoints)
+		ct_idx += 1
+
+	var t_idx: int = 0
+	for bot in team_t.get_children():
+		if not bot.has_method("start_round"):
+			continue
+		if t_idx < t_waypoints.size():
+			bot.global_position = t_waypoints[t_idx]
+		bot.set_patrol_waypoints(t_waypoints)
+		t_idx += 1
 
 func _wire_systems() -> void:
 	var all_ids: Array = []
@@ -124,11 +157,31 @@ func toggle_pause() -> void:
 	emit_signal("pause_toggled", is_paused)
 
 func _on_round_started(_round_num: int) -> void:
+	var spawn_root = box_map.get_node_or_null("SpawnPoints") if box_map else null
 	team_ct_script.on_round_reset()
 	team_t_script.on_round_reset()
-	for bot in team_ct.get_children() + team_t.get_children():
-		if bot.has_method("start_round"):
-			bot.start_round()
+
+	var ct_idx: int = 0
+	for bot in team_ct.get_children():
+		if not bot.has_method("start_round"):
+			continue
+		if spawn_root:
+			var m = spawn_root.get_node_or_null("CT_Spawn_%d" % (ct_idx + 1))
+			if m:
+				bot.global_position = m.global_position
+		bot.start_round()
+		ct_idx += 1
+
+	var t_idx: int = 0
+	for bot in team_t.get_children():
+		if not bot.has_method("start_round"):
+			continue
+		if spawn_root:
+			var m = spawn_root.get_node_or_null("T_Spawn_%d" % (t_idx + 1))
+			if m:
+				bot.global_position = m.global_position
+		bot.start_round()
+		t_idx += 1
 
 func _on_bot_died(_bot_id: int, killer_id: int) -> void:
 	if killer_id >= 0:

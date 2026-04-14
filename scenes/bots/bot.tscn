@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://csmanager_bot"]
+[gd_scene load_steps=7 format=3 uid="uid://csmanager_bot"]
 
 [ext_resource type="Script" path="res://scripts/bots/bot_brain.gd" id="1_bb"]
 [ext_resource type="Script" path="res://scripts/bots/bot_stats.gd" id="2_bs"]
+[ext_resource type="Script" path="res://scripts/weapons/weapon.gd" id="3_wp"]
 
 [sub_resource type="CapsuleShape3D" id="capsule_shape"]
 radius = 0.4
@@ -29,6 +30,10 @@ position = Vector3(0, 0.9, 0)
 
 [node name="WeaponVisual" type="MeshInstance3D" parent="."]
 position = Vector3(0.3, 1.0, -0.4)
+
+[node name="Weapon" type="Node3D" parent="."]
+position = Vector3(0.3, 1.0, -0.4)
+script = ExtResource("3_wp")
 
 [node name="EyePosition" type="Marker3D" parent="."]
 position = Vector3(0, 1.4, 0)
