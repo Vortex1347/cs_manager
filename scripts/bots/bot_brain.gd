@@ -29,8 +29,8 @@ const AGGRESSION_PEEK_THRESHOLD: float = 0.6
 @onready var reaction_timer: Timer = $ReactionTimer
 @onready var perception_timer: Timer = $PerceptionTimer
 @onready var eye_pos: Marker3D = $EyePosition
-@onready var weapon: Node3D = $Weapon
-@onready var debug_label: Label3D = $DebugLabel
+@onready var weapon: Node3D = get_node_or_null("Weapon")
+@onready var debug_label: Label3D = get_node_or_null("DebugLabel")
 
 var current_state: BotState = BotState.IDLE
 var visible_enemies: Array[Node3D] = []

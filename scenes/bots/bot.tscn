@@ -55,6 +55,6 @@ autostart = true
 
 [node name="DebugLabel" type="Label3D" parent="."]
 position = Vector3(0, 2.2, 0)
-billboard = 3
+billboard = 1
 font_size = 14
 text = "IDLE"
