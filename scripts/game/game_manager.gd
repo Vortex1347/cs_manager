@@ -34,6 +34,8 @@ func _ready() -> void:
 	_assign_bot_stats()
 	_setup_bots()
 	_wire_systems()
+	# Ждём пока nav_baker запечёт NavMesh (2 кадра + запас)
+	await get_tree().create_timer(0.5).timeout
 	start_match()
 
 func _setup_bots() -> void:

@@ -206,9 +206,10 @@ func _move_toward_target(next_pos: Vector3) -> void:
 	if direction.length() > 0.1:
 		direction = direction.normalized()
 		nav_agent.velocity = direction * MOVE_SPEED
+		# Движение происходит только в _on_velocity_computed (avoidance callback)
 	else:
 		velocity = Vector3.ZERO
-	move_and_slide()
+		move_and_slide()
 
 func _on_velocity_computed(safe_velocity: Vector3) -> void:
 	velocity = safe_velocity
