@@ -1,0 +1,60 @@
+[gd_scene load_steps=6 format=3 uid="uid://csmanager_bot"]
+
+[ext_resource type="Script" path="res://scripts/bots/bot_brain.gd" id="1_bb"]
+[ext_resource type="Script" path="res://scripts/bots/bot_stats.gd" id="2_bs"]
+
+[sub_resource type="CapsuleShape3D" id="capsule_shape"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="CapsuleMesh" id="capsule_mesh"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="SphereShape3D" id="perception_shape"]
+radius = 20.0
+
+[node name="Bot" type="CharacterBody3D"]
+script = ExtResource("1_bb")
+collision_layer = 8
+collision_mask = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("capsule_shape")
+position = Vector3(0, 0.9, 0)
+
+[node name="Body" type="MeshInstance3D" parent="."]
+mesh = SubResource("capsule_mesh")
+position = Vector3(0, 0.9, 0)
+
+[node name="WeaponVisual" type="MeshInstance3D" parent="."]
+position = Vector3(0.3, 1.0, -0.4)
+
+[node name="EyePosition" type="Marker3D" parent="."]
+position = Vector3(0, 1.4, 0)
+
+[node name="NavAgent" type="NavigationAgent3D" parent="."]
+path_desired_distance = 0.5
+target_desired_distance = 0.5
+avoidance_enabled = true
+max_speed = 4.0
+
+[node name="PerceptionArea" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 24
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PerceptionArea"]
+shape = SubResource("perception_shape")
+
+[node name="ReactionTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="PerceptionTimer" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
+
+[node name="DebugLabel" type="Label3D" parent="."]
+position = Vector3(0, 2.2, 0)
+billboard = 3
+font_size = 14
+text = "IDLE"

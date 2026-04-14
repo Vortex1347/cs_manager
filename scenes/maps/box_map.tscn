@@ -1,0 +1,176 @@
+[gd_scene load_steps=5 format=3 uid="uid://csmanager_map"]
+
+[ext_resource type="Script" path="res://scripts/map/nav_zone.gd" id="1_nz"]
+[ext_resource type="Script" path="res://scripts/map/bombsite.gd" id="2_bs"]
+
+[sub_resource type="StandardMaterial3D" id="mat_floor"]
+albedo_color = Color(0.72, 0.68, 0.60, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="mat_wall"]
+albedo_color = Color(0.55, 0.52, 0.46, 1)
+roughness = 0.85
+
+[node name="BoxMap" type="Node3D"]
+
+[node name="NavRegion" type="NavigationRegion3D" parent="."]
+
+[node name="Floor" type="CSGBox3D" parent="NavRegion"]
+size = Vector3(70, 0.2, 60)
+position = Vector3(0, -0.1, 0)
+use_collision = true
+material = SubResource("mat_floor")
+
+[node name="Walls" type="Node3D" parent="NavRegion"]
+
+[node name="WallNorth" type="CSGBox3D" parent="NavRegion/Walls"]
+size = Vector3(70, 3, 0.4)
+position = Vector3(0, 1.5, -30)
+use_collision = true
+material = SubResource("mat_wall")
+
+[node name="WallSouth" type="CSGBox3D" parent="NavRegion/Walls"]
+size = Vector3(70, 3, 0.4)
+position = Vector3(0, 1.5, 30)
+use_collision = true
+material = SubResource("mat_wall")
+
+[node name="WallWest" type="CSGBox3D" parent="NavRegion/Walls"]
+size = Vector3(0.4, 3, 60)
+position = Vector3(-35, 1.5, 0)
+use_collision = true
+material = SubResource("mat_wall")
+
+[node name="WallEast" type="CSGBox3D" parent="NavRegion/Walls"]
+size = Vector3(0.4, 3, 60)
+position = Vector3(35, 1.5, 0)
+use_collision = true
+material = SubResource("mat_wall")
+
+[node name="InnerWalls" type="Node3D" parent="NavRegion"]
+
+[node name="MidWallWest" type="CSGBox3D" parent="NavRegion/InnerWalls"]
+size = Vector3(0.4, 3, 10)
+position = Vector3(-4, 1.5, -15)
+use_collision = true
+material = SubResource("mat_wall")
+
+[node name="MidWallEast" type="CSGBox3D" parent="NavRegion/InnerWalls"]
+size = Vector3(0.4, 3, 10)
+position = Vector3(4, 1.5, -15)
+use_collision = true
+material = SubResource("mat_wall")
+
+[node name="SiteAWallNorth" type="CSGBox3D" parent="NavRegion/InnerWalls"]
+size = Vector3(14, 3, 0.4)
+position = Vector3(-21, 1.5, 5)
+use_collision = true
+material = SubResource("mat_wall")
+
+[node name="SiteAWallEast" type="CSGBox3D" parent="NavRegion/InnerWalls"]
+size = Vector3(0.4, 3, 18)
+position = Vector3(-14, 1.5, 14)
+use_collision = true
+material = SubResource("mat_wall")
+
+[node name="SiteBWallNorth" type="CSGBox3D" parent="NavRegion/InnerWalls"]
+size = Vector3(14, 3, 0.4)
+position = Vector3(21, 1.5, 5)
+use_collision = true
+material = SubResource("mat_wall")
+
+[node name="SiteBWallWest" type="CSGBox3D" parent="NavRegion/InnerWalls"]
+size = Vector3(0.4, 3, 18)
+position = Vector3(14, 1.5, 14)
+use_collision = true
+material = SubResource("mat_wall")
+
+[node name="CTSpawnWall" type="CSGBox3D" parent="NavRegion/InnerWalls"]
+size = Vector3(0.4, 3, 14)
+position = Vector3(-10, 1.5, -22)
+use_collision = true
+material = SubResource("mat_wall")
+
+[node name="TSpawnWall" type="CSGBox3D" parent="NavRegion/InnerWalls"]
+size = Vector3(0.4, 3, 14)
+position = Vector3(10, 1.5, -22)
+use_collision = true
+material = SubResource("mat_wall")
+
+[node name="Zones" type="Node3D" parent="."]
+
+[node name="ZoneCTSpawn" type="Area3D" parent="Zones"]
+position = Vector3(-20, 0, -20)
+collision_layer = 32
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Zones/ZoneCTSpawn"]
+shape = BoxShape3D new()
+
+[node name="ZoneTSpawn" type="Area3D" parent="Zones"]
+position = Vector3(20, 0, -20)
+collision_layer = 32
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Zones/ZoneTSpawn"]
+shape = BoxShape3D new()
+
+[node name="ZoneMid" type="Area3D" parent="Zones"]
+position = Vector3(0, 0, 0)
+collision_layer = 32
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Zones/ZoneMid"]
+shape = BoxShape3D new()
+
+[node name="ZoneSiteA" type="Area3D" parent="Zones"]
+position = Vector3(-20, 0, 15)
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("2_bs")
+site_id = "A"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Zones/ZoneSiteA"]
+shape = BoxShape3D new()
+
+[node name="ZoneSiteB" type="Area3D" parent="Zones"]
+position = Vector3(20, 0, 15)
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("2_bs")
+site_id = "B"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Zones/ZoneSiteB"]
+shape = BoxShape3D new()
+
+[node name="SpawnPoints" type="Node3D" parent="."]
+
+[node name="CT_Spawn_1" type="Marker3D" parent="SpawnPoints"]
+position = Vector3(-22, 0, -22)
+
+[node name="CT_Spawn_2" type="Marker3D" parent="SpawnPoints"]
+position = Vector3(-18, 0, -22)
+
+[node name="CT_Spawn_3" type="Marker3D" parent="SpawnPoints"]
+position = Vector3(-22, 0, -18)
+
+[node name="CT_Spawn_4" type="Marker3D" parent="SpawnPoints"]
+position = Vector3(-18, 0, -18)
+
+[node name="CT_Spawn_5" type="Marker3D" parent="SpawnPoints"]
+position = Vector3(-20, 0, -24)
+
+[node name="T_Spawn_1" type="Marker3D" parent="SpawnPoints"]
+position = Vector3(22, 0, -22)
+
+[node name="T_Spawn_2" type="Marker3D" parent="SpawnPoints"]
+position = Vector3(18, 0, -22)
+
+[node name="T_Spawn_3" type="Marker3D" parent="SpawnPoints"]
+position = Vector3(22, 0, -18)
+
+[node name="T_Spawn_4" type="Marker3D" parent="SpawnPoints"]
+position = Vector3(18, 0, -18)
+
+[node name="T_Spawn_5" type="Marker3D" parent="SpawnPoints"]
+position = Vector3(20, 0, -24)
