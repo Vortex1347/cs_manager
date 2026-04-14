@@ -6,8 +6,8 @@ extends CanvasLayer
 class_name PauseController
 
 @onready var pause_overlay: Control = $PauseOverlay
-@onready var strategy_buttons: VBoxContainer = $PauseOverlay/StrategyButtons
-@onready var resume_button: Button = $PauseOverlay/ResumeButton
+@onready var strategy_buttons: VBoxContainer = $PauseOverlay/CenterContainer/VBoxContainer/StrategyButtons
+@onready var resume_button: Button = $PauseOverlay/CenterContainer/VBoxContainer/ResumeButton
 
 var _game_manager: Node = null
 

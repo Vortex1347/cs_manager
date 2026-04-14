@@ -4,6 +4,8 @@
 [ext_resource type="PackedScene" path="res://scenes/bots/bot.tscn" id="2_ffuou"]
 [ext_resource type="Script" uid="uid://bf3fkd5vrqc3v" path="res://scripts/game/round_manager.gd" id="2_rm"]
 [ext_resource type="Script" uid="uid://b2q3osnb7v1kh" path="res://scripts/game/economy.gd" id="4_eco"]
+[ext_resource type="PackedScene" uid="uid://dl5yg74uckxin" path="res://scenes/maps/box_map.tscn" id="5_map"]
+[ext_resource type="PackedScene" uid="uid://csmanager_hud" path="res://scenes/ui/hud.tscn" id="6_hud"]
 
 [node name="GameManager" type="Node3D" unique_id=406532206]
 script = ExtResource("1_gm")
@@ -54,4 +56,6 @@ script = ExtResource("2_rm")
 [node name="Economy" type="Node" parent="." unique_id=317869642]
 script = ExtResource("4_eco")
 
-[node name="HUD" type="CanvasLayer" parent="." unique_id=811586428]
+[node name="BoxMap" parent="." unique_id=512345678 instance=ExtResource("5_map")]
+
+[node name="HUD" parent="." unique_id=811586428 instance=ExtResource("6_hud")]
