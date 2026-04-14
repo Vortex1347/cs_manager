@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(godot4:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(cat:*)",
+      "Bash(ls:*)",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)",
+      "Bash(mv:*)",
+      "Write(*)"
+    ],
+    "deny": []
+  },
+  "env": {
+    "GODOT_PROJECT_ROOT": ".",
+    "GAME_NAME": "cs_manager"
+  },
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "."
+      ]
+    },
+    "memory": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ]
+    }
+  }
+}
