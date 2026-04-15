@@ -39,15 +39,15 @@ func _ready() -> void:
 	start_match()
 
 func _setup_bots() -> void:
-	var spawn_root: Node3D = box_map.get_node_or_null("SpawnPoints") if box_map else null
+	var patrol_root: Node3D = box_map.get_node_or_null("PatrolPoints") if box_map else null
 	var ct_waypoints: Array[Vector3] = []
 	var t_waypoints: Array[Vector3] = []
-	if spawn_root:
+	if patrol_root:
 		for i in range(1, 6):
-			var ct_m = spawn_root.get_node_or_null("CT_Spawn_%d" % i)
+			var ct_m = patrol_root.get_node_or_null("CT_Patrol_%d" % i)
 			if ct_m:
 				ct_waypoints.append(ct_m.global_position)
-			var t_m = spawn_root.get_node_or_null("T_Spawn_%d" % i)
+			var t_m = patrol_root.get_node_or_null("T_Patrol_%d" % i)
 			if t_m:
 				t_waypoints.append(t_m.global_position)
 
@@ -213,6 +213,8 @@ func _on_round_ended(winner: String, _reason: String) -> void:
 		score_ct += 1
 	elif winner == "T":
 		score_t += 1
+	if hud and hud.has_method("update_score"):
+		hud.update_score(score_ct, score_t)
 
 	if score_ct >= ROUNDS_TO_WIN:
 		_end_match("CT")
