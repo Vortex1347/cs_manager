@@ -37,6 +37,7 @@ var visible_enemies: Array[Node3D] = []
 var last_known_enemy_pos: Vector3 = Vector3.ZERO
 var last_seen_time: float = 0.0
 var _is_blinded: bool = false
+var _is_live: bool = false
 var _team: Node = null
 var _patrol_waypoints: Array[Vector3] = []
 var _current_waypoint_idx: int = 0
@@ -55,6 +56,9 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if current_state == BotState.DEAD:
+		return
+	if not _is_live:
+		velocity = Vector3.ZERO
 		return
 	match current_state:
 		BotState.IDLE:     pass
@@ -265,10 +269,16 @@ func apply_damage(amount: int, source_id: int) -> void:
 		_die(source_id)
 
 func start_round() -> void:
+	_is_live = false
 	stats.reset_hp()
 	visible_enemies.clear()
 	last_known_enemy_pos = Vector3.ZERO
-	_change_state(BotState.PATROL)
+	_change_state(BotState.IDLE)
+
+func begin_live_phase() -> void:
+	_is_live = true
+	if current_state == BotState.IDLE:
+		_change_state(BotState.PATROL)
 
 # ── Таймеры ─────────────────────────────────────────────────────────────────
 

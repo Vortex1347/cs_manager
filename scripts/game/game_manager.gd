@@ -40,34 +40,37 @@ func _ready() -> void:
 
 func _setup_bots() -> void:
 	var patrol_root: Node3D = box_map.get_node_or_null("PatrolPoints") if box_map else null
-	var ct_waypoints: Array[Vector3] = []
-	var t_waypoints: Array[Vector3] = []
-	if patrol_root:
-		for i in range(1, 6):
-			var ct_m = patrol_root.get_node_or_null("CT_Patrol_%d" % i)
-			if ct_m:
-				ct_waypoints.append(ct_m.global_position)
-			var t_m = patrol_root.get_node_or_null("T_Patrol_%d" % i)
-			if t_m:
-				t_waypoints.append(t_m.global_position)
+	if not patrol_root:
+		return
+
+	var ct_a_wps: Array[Vector3] = _load_waypoints(patrol_root, "CT_SiteA_%d", 4)
+	var ct_b_wps: Array[Vector3] = _load_waypoints(patrol_root, "CT_SiteB_%d", 4)
+	var t_a_wps:  Array[Vector3] = _load_waypoints(patrol_root, "T_RushA_%d", 4)
+	var t_b_wps:  Array[Vector3] = _load_waypoints(patrol_root, "T_RushB_%d", 4)
 
 	var ct_idx: int = 0
 	for bot in team_ct.get_children():
 		if not bot.has_method("start_round"):
 			continue
-		if ct_idx < ct_waypoints.size():
-			bot.global_position = ct_waypoints[ct_idx]
-		bot.set_patrol_waypoints(ct_waypoints)
+		# Боты 0-2 защищают сайт A, 3-4 — сайт B
+		bot.set_patrol_waypoints(ct_a_wps if ct_idx < 3 else ct_b_wps)
 		ct_idx += 1
 
 	var t_idx: int = 0
 	for bot in team_t.get_children():
 		if not bot.has_method("start_round"):
 			continue
-		if t_idx < t_waypoints.size():
-			bot.global_position = t_waypoints[t_idx]
-		bot.set_patrol_waypoints(t_waypoints)
+		# Боты 0-2 рашат A, 3-4 — рашат B
+		bot.set_patrol_waypoints(t_a_wps if t_idx < 3 else t_b_wps)
 		t_idx += 1
+
+func _load_waypoints(root: Node3D, pattern: String, count: int) -> Array[Vector3]:
+	var result: Array[Vector3] = []
+	for i in range(1, count + 1):
+		var m = root.get_node_or_null(pattern % i)
+		if m:
+			result.append(m.global_position)
+	return result
 
 func _wire_systems() -> void:
 	var all_ids: Array = []
@@ -205,6 +208,13 @@ func _on_time_updated(secs: float) -> void:
 		hud.update_timer(secs)
 
 func _on_phase_changed(phase: int) -> void:
+	if phase == 1:  # RoundPhase.LIVE
+		for bot in team_ct.get_children():
+			if bot.has_method("begin_live_phase"):
+				bot.begin_live_phase()
+		for bot in team_t.get_children():
+			if bot.has_method("begin_live_phase"):
+				bot.begin_live_phase()
 	if hud and hud.has_method("update_phase"):
 		hud.update_phase(phase)
 
