@@ -100,6 +100,18 @@ func _wire_systems() -> void:
 	team_ct_script.all_bots_dead.connect(func(): round_manager.end_round("T", "elimination"))
 	team_t_script.all_bots_dead.connect(func(): round_manager.end_round("CT", "elimination"))
 
+	# Подключить бомбсайты
+	for site_path in ["Zones/ZoneSiteA", "Zones/ZoneSiteB"]:
+		var site = box_map.get_node_or_null(site_path) if box_map else null
+		if not site:
+			continue
+		site.plant_completed.connect(func(_sid): economy.reward_plant(_get_bomb_carrier_id()))
+		site.bomb_exploded.connect(func(_sid): round_manager.end_round("T", "bomb_exploded"))
+		site.defuse_completed.connect(func(_sid):
+			economy.reward_defuse(_get_defuser_id())
+			round_manager.end_round("CT", "defused")
+		)
+
 func _ensure_team_scripts() -> void:
 	# Если на узлах TeamCT/TeamT нет bot_team.gd — создаём дочерний узел со скриптом
 	team_ct_script = team_ct.get_node_or_null("BotTeamScript")
@@ -166,10 +178,17 @@ func _on_round_started(_round_num: int) -> void:
 	team_ct_script.on_round_reset()
 	team_t_script.on_round_reset()
 
+	# Сброс бомбсайтов
+	for site_path in ["Zones/ZoneSiteA", "Zones/ZoneSiteB"]:
+		var s = box_map.get_node_or_null(site_path) if box_map else null
+		if s:
+			s.reset()
+
 	var ct_idx: int = 0
 	for bot in team_ct.get_children():
 		if not bot.has_method("start_round"):
 			continue
+		bot.add_to_group("ct_bots")
 		if spawn_root:
 			var m = spawn_root.get_node_or_null("CT_Spawn_%d" % (ct_idx + 1))
 			if m:
@@ -178,6 +197,7 @@ func _on_round_started(_round_num: int) -> void:
 		ct_idx += 1
 
 	var t_idx: int = 0
+	var bomb_assigned: bool = false
 	for bot in team_t.get_children():
 		if not bot.has_method("start_round"):
 			continue
@@ -185,6 +205,10 @@ func _on_round_started(_round_num: int) -> void:
 			var m = spawn_root.get_node_or_null("T_Spawn_%d" % (t_idx + 1))
 			if m:
 				bot.global_position = m.global_position
+		# Первый T бот несёт бомбу
+		if bot.has_method("set_bomb_carrier"):
+			bot.set_bomb_carrier(not bomb_assigned)
+			bomb_assigned = true
 		bot.start_round()
 		t_idx += 1
 
@@ -208,7 +232,9 @@ func _on_time_updated(secs: float) -> void:
 		hud.update_timer(secs)
 
 func _on_phase_changed(phase: int) -> void:
-	if phase == 1:  # RoundPhase.LIVE
+	if phase == 0:  # BUY_PHASE
+		_do_auto_buy()
+	elif phase == 1:  # LIVE
 		for bot in team_ct.get_children():
 			if bot.has_method("begin_live_phase"):
 				bot.begin_live_phase()
@@ -217,6 +243,42 @@ func _on_phase_changed(phase: int) -> void:
 				bot.begin_live_phase()
 	if hud and hud.has_method("update_phase"):
 		hud.update_phase(phase)
+
+func _do_auto_buy() -> void:
+	for bot in team_ct.get_children():
+		if not bot.has_method("start_round"):
+			continue
+		var items = economy.auto_buy(bot.stats.bot_id, economy.get_money(bot.stats.bot_id), "CT")
+		_apply_loadout(bot, items)
+	for bot in team_t.get_children():
+		if not bot.has_method("start_round"):
+			continue
+		var items = economy.auto_buy(bot.stats.bot_id, economy.get_money(bot.stats.bot_id), "T")
+		_apply_loadout(bot, items)
+
+func _apply_loadout(bot: Node, items: Array) -> void:
+	var weapon_node = bot.get_node_or_null("Weapon")
+	if not weapon_node:
+		return
+	for item in items:
+		match item:
+			"rifle":      weapon_node.set_weapon_type(Weapon.WeaponType.RIFLE)
+			"smg":        weapon_node.set_weapon_type(Weapon.WeaponType.SMG)
+			"pistol":     weapon_node.set_weapon_type(Weapon.WeaponType.PISTOL)
+			"armor":      bot.stats.armor = 100
+			"defuse_kit": bot.stats.has_defuse_kit = true
+
+func _get_bomb_carrier_id() -> int:
+	for bot in team_t.get_children():
+		if bot.has_method("set_bomb_carrier") and bot._is_bomb_carrier:
+			return bot.stats.bot_id
+	return -1
+
+func _get_defuser_id() -> int:
+	for bot in team_ct.get_children():
+		if bot.has_method("start_round") and bot.stats.is_dead() == false:
+			return bot.stats.bot_id
+	return -1
 
 func _on_round_ended(winner: String, _reason: String) -> void:
 	if winner == "CT":

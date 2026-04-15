@@ -71,6 +71,10 @@ func cancel_defuse() -> void:
 	_defuse_timer = 0.0
 	_defusing_bot_id = -1
 
+func _ready() -> void:
+	add_to_group("bombsites")
+	set_process(false)
+
 func reset() -> void:
 	bomb_planted = false
 	bomb_exploded_flag = false
@@ -99,6 +103,8 @@ func _explode() -> void:
 	bomb_exploded_flag = true
 	emit_signal("bomb_exploded", site_id)
 
-func _has_defuse_kit(_bot_id: int) -> bool:
-	# TODO: проверить инвентарь бота через bot_team
+func _has_defuse_kit(bot_id: int) -> bool:
+	for bot in get_tree().get_nodes_in_group("ct_bots"):
+		if bot is BotBrain and bot.stats.bot_id == bot_id:
+			return bot.stats.has_defuse_kit
 	return false

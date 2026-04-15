@@ -17,6 +17,7 @@ const REWARD_PLANT: int = 300
 const REWARD_DEFUSE: int = 300
 const MAX_MONEY: int = 16000
 const START_MONEY: int = 800
+const ARMOR_PRICE: int = 650
 
 # Стоимости предметов
 const WEAPON_PRICES: Dictionary = {
@@ -79,11 +80,19 @@ func reward_plant(bot_id: int) -> void:
 func reward_defuse(bot_id: int) -> void:
 	add_money(bot_id, REWARD_DEFUSE)
 
-# Авто-покупка для бота по приоритету
-func auto_buy(bot_id: int, current_money: int) -> Array:
+# Авто-покупка по приоритету CS2: броня → оружие → kit
+func auto_buy(bot_id: int, current_money: int, team: String) -> Array:
 	var bought = []
 	var money = current_money
-	# Приоритет: rifle > smg > pistol
+
+	# 1. Броня (приоритет для CT)
+	if money >= ARMOR_PRICE:
+		bought.append("armor")
+		money -= ARMOR_PRICE
+		deduct_money(bot_id, ARMOR_PRICE)
+		emit_signal("purchase_made", bot_id, "armor", ARMOR_PRICE)
+
+	# 2. Оружие: rifle > smg > pistol (бесплатный)
 	if money >= WEAPON_PRICES["rifle"]:
 		bought.append("rifle")
 		money -= WEAPON_PRICES["rifle"]
@@ -94,12 +103,16 @@ func auto_buy(bot_id: int, current_money: int) -> Array:
 		money -= WEAPON_PRICES["smg"]
 		deduct_money(bot_id, WEAPON_PRICES["smg"])
 		emit_signal("purchase_made", bot_id, "smg", WEAPON_PRICES["smg"])
-	# Добавить гранаты если остались деньги
-	if money >= WEAPON_PRICES["smoke"]:
-		bought.append("smoke")
-		money -= WEAPON_PRICES["smoke"]
-		deduct_money(bot_id, WEAPON_PRICES["smoke"])
-		emit_signal("purchase_made", bot_id, "smoke", WEAPON_PRICES["smoke"])
+	else:
+		bought.append("pistol")
+
+	# 3. Defuse kit для CT
+	if team == "CT" and money >= WEAPON_PRICES["defuse_kit"]:
+		bought.append("defuse_kit")
+		money -= WEAPON_PRICES["defuse_kit"]
+		deduct_money(bot_id, WEAPON_PRICES["defuse_kit"])
+		emit_signal("purchase_made", bot_id, "defuse_kit", WEAPON_PRICES["defuse_kit"])
+
 	return bought
 
 func can_afford(bot_id: int, item: String) -> bool:

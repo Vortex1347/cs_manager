@@ -38,6 +38,7 @@ var last_known_enemy_pos: Vector3 = Vector3.ZERO
 var last_seen_time: float = 0.0
 var _is_blinded: bool = false
 var _is_live: bool = false
+var _is_bomb_carrier: bool = false
 var _team: Node = null
 var _patrol_waypoints: Array[Vector3] = []
 var _current_waypoint_idx: int = 0
@@ -107,6 +108,20 @@ func _state_patrol(delta: float) -> void:
 		return
 	_move_toward_target(nav_agent.get_next_path_position())
 	if nav_agent.is_navigation_finished():
+		# CT: если бомба заложена — идти дефузить
+		if stats.team == BotStats.Team.CT:
+			for site in get_tree().get_nodes_in_group("bombsites"):
+				if site.bomb_planted and not site.bomb_exploded_flag:
+					_navigate_to(site.global_position)
+					return
+		# T bomb carrier: попробовать заложить бомбу на сайте
+		if _is_bomb_carrier and stats.team == BotStats.Team.T:
+			var site = _get_bombsite_at_position()
+			if site and not site.bomb_planted and not site.bomb_exploded_flag:
+				site.begin_plant(stats.bot_id)
+				_dwelling = true
+				_dwell_timer = site.PLANT_DURATION + 0.2
+				return
 		_dwell_timer = stats.get_angle_dwell_time() if _current_waypoint_uses_angle_hold() else 0.3
 		_dwelling = true
 
@@ -119,6 +134,10 @@ func _state_spotted(_delta: float) -> void:
 		_face_toward(last_known_enemy_pos)
 
 func _state_engage(_delta: float) -> void:
+	# CT: попробовать дефузить бомбу если рядом
+	if stats.team == BotStats.Team.CT:
+		_try_defuse()
+
 	if visible_enemies.is_empty():
 		# Враг исчез — проверяем память
 		var elapsed = Time.get_ticks_msec() / 1000.0 - last_seen_time
@@ -235,6 +254,23 @@ func _find_cover_position() -> Vector3:
 func _should_retreat() -> bool:
 	var hp_ratio = float(stats.current_hp) / float(stats.max_hp)
 	return hp_ratio < stats.get_retreat_threshold()
+
+# ── Бомба ───────────────────────────────────────────────────────────────────
+
+func set_bomb_carrier(v: bool) -> void:
+	_is_bomb_carrier = v
+
+func _get_bombsite_at_position() -> Bombsite:
+	for site in get_tree().get_nodes_in_group("bombsites"):
+		if global_position.distance_to(site.global_position) < 6.0:
+			return site
+	return null
+
+func _try_defuse() -> void:
+	for site in get_tree().get_nodes_in_group("bombsites"):
+		if site.bomb_planted and not site.bomb_exploded_flag:
+			if global_position.distance_to(site.global_position) < 3.5:
+				site.begin_defuse(stats.bot_id)
 
 # ── Патруль ─────────────────────────────────────────────────────────────────
 

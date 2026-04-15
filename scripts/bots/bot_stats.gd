@@ -28,12 +28,17 @@ const MAX_REACTION_TIME: float = 1.5
 var current_hp: int = MAX_HP
 
 # --- Для системы улучшений ---
+@export var armor: int = 0
+@export var has_defuse_kit: bool = false
+
 @export var upgrade_cost_aim: int = 2
 @export var upgrade_cost_reaction: int = 3
 @export var upgrade_cost_sense: int = 2
 
 func reset_hp() -> void:
 	current_hp = max_hp
+	armor = 0
+	has_defuse_kit = false
 
 func take_damage(amount: int) -> void:
 	current_hp = max(0, current_hp - amount)
