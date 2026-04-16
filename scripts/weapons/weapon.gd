@@ -90,9 +90,13 @@ func _do_fire(target: Node3D, stats: BotStats) -> void:
 	var space = get_world_3d().direct_space_state
 	var query = PhysicsRayQueryParameters3D.create(eye_pos, eye_pos + dir * MAX_RANGE)
 	query.exclude = [get_parent()]
-	query.collision_mask = BOT_COLLISION_LAYER_CT | BOT_COLLISION_LAYER_T
+	query.collision_mask = BOT_COLLISION_LAYER_CT | BOT_COLLISION_LAYER_T | 1  # 1 = стены
 
 	var result = space.intersect_ray(query)
+	var hit_pos = result["position"] if not result.is_empty() else eye_pos + dir * 50.0
+	var tc: Color = Color(0.3, 0.8, 1.0) if stats.team == BotStats.Team.CT else Color(1.0, 0.55, 0.1)
+	_spawn_tracer(eye_pos, hit_pos, tc)
+
 	if result.is_empty():
 		return
 
@@ -109,6 +113,25 @@ func _do_fire(target: Node3D, stats: BotStats) -> void:
 	if hit_body is BotBrain and hit_body.stats.armor > 0:
 		raw_damage = int(raw_damage * WEAPON_DATA[weapon_type]["armor_factor"])
 
-	hit_body.apply_damage(raw_damage, stats.bot_id)
+	hit_body.apply_damage(raw_damage, stats.bot_id, eye_pos)
 	var target_id = hit_body.stats.bot_id if hit_body is BotBrain else -1
 	emit_signal("hit_confirmed", stats.bot_id, target_id, raw_damage)
+
+func _spawn_tracer(from: Vector3, to: Vector3, col: Color = Color(1.0, 0.95, 0.4)) -> void:
+	var dist = from.distance_to(to)
+	if dist < 0.1:
+		return
+	var tracer = MeshInstance3D.new()
+	var mesh = BoxMesh.new()
+	mesh.size = Vector3(0.04, 0.04, dist)
+	tracer.mesh = mesh
+	var mat = StandardMaterial3D.new()
+	mat.albedo_color = col
+	mat.emission_enabled = true
+	mat.emission = col
+	mat.emission_energy_multiplier = 4.0
+	tracer.material_override = mat
+	get_tree().current_scene.add_child(tracer)
+	tracer.global_position = (from + to) * 0.5
+	tracer.look_at(to, Vector3.UP)
+	get_tree().create_timer(0.06).timeout.connect(tracer.queue_free)

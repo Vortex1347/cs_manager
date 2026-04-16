@@ -24,8 +24,8 @@ func _ready() -> void:
 
 func start_round() -> void:
 	round_number += 1
-	_set_phase(RoundPhase.BUY_PHASE)
-	emit_signal("round_started", round_number)
+	emit_signal("round_started", round_number)  # сначала сбрасываем ботов
+	_set_phase(RoundPhase.BUY_PHASE)             # потом бай-фаза + автозакупка
 	set_process(true)
 
 func _process(delta: float) -> void:
@@ -38,8 +38,8 @@ func _process(delta: float) -> void:
 			RoundPhase.BUY_PHASE:
 				_set_phase(RoundPhase.LIVE)
 			RoundPhase.LIVE:
-				# Время вышло — T побеждают если бомба не заложена, CT — если не было бомбы
-				end_round("T", "time_expired")
+				# Время вышло и бомба не заложена → CT победили
+				end_round("CT", "time_expired")
 
 func _set_phase(phase: RoundPhase) -> void:
 	current_phase = phase

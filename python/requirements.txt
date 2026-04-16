@@ -1,0 +1,15 @@
+stable-baselines3[extra]>=2.0.0
+gymnasium>=0.29.0
+websocket-client>=1.6.0
+numpy>=1.24.0
+torch>=2.0.0
+tensorboard>=2.13.0
+
+
+# 1. Godot Editor → нод GameManager → Inspector → rl_training_mode ✓ (поставить галочку)
+# 2. Запустить игру (F5 или headless)
+# 3. cd python && python train.py     ← подключается по WS, начинает обучение
+# 4. Смотреть прогресс: tensorboard --logdir tb_logs/
+# 5. После завершения (или Ctrl+C):
+#    python export_weights.py         ← создаёт model_weights.json
+#    cp ../model_weights.json res://  ← скопировать в проект

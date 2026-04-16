@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://csmanager_hud"]
+[gd_scene load_steps=2 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/pause_controller.gd" id="1_pc"]
 
@@ -86,3 +86,72 @@ text = "Eco"
 
 [node name="ResumeButton" type="Button" parent="PauseOverlay/CenterContainer/VBoxContainer"]
 text = "Resume (Space)"
+
+[node name="BombStatus" type="Label" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_right = 150.0
+offset_top = 95.0
+offset_bottom = 115.0
+text = ""
+horizontal_alignment = 1
+modulate = Color(1, 0.85, 0.1, 1)
+
+[node name="CTHealthPanel" type="VBoxContainer" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_right = 175.0
+offset_top = -135.0
+offset_bottom = -10.0
+
+[node name="CTH0" type="Label" parent="CTHealthPanel"]
+text = "CT_0: 100"
+modulate = Color(0.4, 0.8, 1.0, 1)
+
+[node name="CTH1" type="Label" parent="CTHealthPanel"]
+text = "CT_1: 100"
+modulate = Color(0.4, 0.8, 1.0, 1)
+
+[node name="CTH2" type="Label" parent="CTHealthPanel"]
+text = "CT_2: 100"
+modulate = Color(0.4, 0.8, 1.0, 1)
+
+[node name="CTH3" type="Label" parent="CTHealthPanel"]
+text = "CT_3: 100"
+modulate = Color(0.4, 0.8, 1.0, 1)
+
+[node name="CTH4" type="Label" parent="CTHealthPanel"]
+text = "CT_4: 100"
+modulate = Color(0.4, 0.8, 1.0, 1)
+
+[node name="THealthPanel" type="VBoxContainer" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = -175.0
+offset_right = -10.0
+offset_top = -135.0
+offset_bottom = -10.0
+
+[node name="TH0" type="Label" parent="THealthPanel"]
+text = "T_0: 100"
+modulate = Color(1.0, 0.6, 0.2, 1)
+
+[node name="TH1" type="Label" parent="THealthPanel"]
+text = "T_1: 100"
+modulate = Color(1.0, 0.6, 0.2, 1)
+
+[node name="TH2" type="Label" parent="THealthPanel"]
+text = "T_2: 100"
+modulate = Color(1.0, 0.6, 0.2, 1)
+
+[node name="TH3" type="Label" parent="THealthPanel"]
+text = "T_3: 100"
+modulate = Color(1.0, 0.6, 0.2, 1)
+
+[node name="TH4" type="Label" parent="THealthPanel"]
+text = "T_4: 100"
+modulate = Color(1.0, 0.6, 0.2, 1)

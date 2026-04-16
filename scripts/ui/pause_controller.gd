@@ -12,6 +12,9 @@ class_name PauseController
 @onready var phase_label: Label = $PhaseLabel
 @onready var score_ct_label: Label = $ScoreBar/ScoreCT
 @onready var score_t_label: Label = $ScoreBar/ScoreT
+@onready var bomb_status_label: Label = $BombStatus
+@onready var ct_health_panel: VBoxContainer = $CTHealthPanel
+@onready var t_health_panel: VBoxContainer = $THealthPanel
 
 var _game_manager: Node = null
 
@@ -45,3 +48,21 @@ func update_phase(phase: int) -> void:
 func update_score(ct: int, t: int) -> void:
 	score_ct_label.text = "CT: %d" % ct
 	score_t_label.text = "T: %d" % t
+
+func update_bomb_status(text: String) -> void:
+	if bomb_status_label:
+		bomb_status_label.text = text
+
+func update_bot_health(ct_hps: Array, t_hps: Array) -> void:
+	if not ct_health_panel or not t_health_panel:
+		return
+	var ct_labels := ct_health_panel.get_children()
+	for i in range(min(ct_hps.size(), ct_labels.size())):
+		var hp: int = ct_hps[i]
+		ct_labels[i].text = "CT_%d: %d" % [i, hp]
+		ct_labels[i].modulate = Color(0.4, 0.8, 1.0) if hp > 0 else Color(0.4, 0.4, 0.4)
+	var t_labels := t_health_panel.get_children()
+	for i in range(min(t_hps.size(), t_labels.size())):
+		var hp: int = t_hps[i]
+		t_labels[i].text = "T_%d: %d" % [i, hp]
+		t_labels[i].modulate = Color(1.0, 0.6, 0.2) if hp > 0 else Color(0.4, 0.4, 0.4)

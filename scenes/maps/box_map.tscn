@@ -4,10 +4,12 @@
 [ext_resource type="Script" path="res://scripts/map/nav_baker.gd" id="3_nb"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_k18wa"]
-vertices = PackedVector3Array(-34.2, 3.3999999, -16.7, -10.700001, 3.3999999, -16.7, -10.700001, 3.3999999, -29.2, -34.2, 3.3999999, -29.2, -9.200001, 3.3999999, -16.7, -4.700001, 3.3999999, -16.7, -4.700001, 3.3999999, -20.45, -3.7000008, 3.3999999, -20.7, -3.7000008, 3.3999999, -29.2, -9.200001, 3.3999999, -29.2, -3.2000008, 3.3999999, -20.45, -3.2000008, 3.3999999, -18.45, 3.2999992, 3.3999999, -18.45, 3.2999992, 3.3999999, -20.45, 3.7999992, 3.3999999, -20.7, 3.7999992, 3.3999999, -29.2, 4.799999, 3.3999999, -20.45, 4.799999, 3.3999999, -16.7, 9.299999, 3.3999999, -16.7, 9.299999, 3.3999999, -29.2, 10.799999, 3.3999999, -16.7, 34.3, 3.3999999, -16.7, 34.3, 3.3999999, -29.2, 10.799999, 3.3999999, -29.2, -3.2000008, 3.3999999, -11.700001, 3.2999992, 3.3999999, -11.700001, -9.200001, 3.3999999, -14.700001, -4.700001, 3.3999999, -9.950001, -34.2, 3.3999999, 5.049999, -28.7, 3.3999999, 5.049999, -28.45, 3.3999999, 4.299999, -13.700001, 3.3999999, 4.299999, -10.450001, 3.3999999, -14.450001, 9.549999, 3.3999999, -14.450001, 4.799999, 3.3999999, -9.950001, 28.3, 3.3999999, 4.299999, 28.55, 3.3999999, 5.049999, 34.3, 3.3999999, 5.049999, 10.799999, 3.3999999, -14.700001, 13.799999, 3.3999999, 4.299999, 3.2999992, 3.3999999, -9.700001, -3.2000008, 3.3999999, -9.700001, 4.549999, 3.3999999, -9.450001, -4.450001, 3.3999999, -9.450001, -13.200001, 3.3999999, 4.549999, -13.200001, 3.3999999, 6.549999, 13.299999, 3.3999999, 6.549999, 13.299999, 3.3999999, 4.549999, -28.45, 3.3999999, 5.799999, -13.950001, 3.3999999, 29.3, -13.950001, 3.3999999, 23.55, -14.700001, 3.3999999, 23.3, -34.2, 3.3999999, 29.3, -14.700001, 3.3999999, 5.799999, 28.3, 3.3999999, 5.799999, 14.799999, 3.3999999, 23.3, 14.049999, 3.3999999, 23.55, 14.049999, 3.3999999, 29.3, 34.3, 3.3999999, 29.3, 14.799999, 3.3999999, 5.799999, 13.299999, 3.3999999, 23.3, -13.200001, 3.3999999, 23.3)
-polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1), PackedInt32Array(6, 5, 4), PackedInt32Array(8, 7, 6), PackedInt32Array(8, 6, 9), PackedInt32Array(9, 6, 4), PackedInt32Array(13, 12, 10), PackedInt32Array(10, 12, 11), PackedInt32Array(10, 7, 13), PackedInt32Array(13, 7, 14), PackedInt32Array(14, 7, 8), PackedInt32Array(14, 8, 15), PackedInt32Array(18, 17, 16), PackedInt32Array(16, 14, 15), PackedInt32Array(15, 19, 16), PackedInt32Array(16, 19, 18), PackedInt32Array(23, 22, 20), PackedInt32Array(20, 22, 21), PackedInt32Array(11, 12, 24), PackedInt32Array(24, 12, 25), PackedInt32Array(4, 5, 26), PackedInt32Array(26, 5, 27), PackedInt32Array(29, 28, 30), PackedInt32Array(30, 28, 0), PackedInt32Array(32, 31, 1), PackedInt32Array(1, 31, 30), PackedInt32Array(1, 30, 0), PackedInt32Array(26, 27, 32), PackedInt32Array(32, 27, 31), PackedInt32Array(18, 33, 17), PackedInt32Array(17, 33, 34), PackedInt32Array(36, 35, 37), PackedInt32Array(37, 35, 21), PackedInt32Array(38, 20, 39), PackedInt32Array(39, 20, 35), PackedInt32Array(35, 20, 21), PackedInt32Array(33, 38, 34), PackedInt32Array(34, 38, 39), PackedInt32Array(41, 24, 40), PackedInt32Array(40, 24, 25), PackedInt32Array(47, 46, 42), PackedInt32Array(42, 46, 43), PackedInt32Array(43, 46, 44), PackedInt32Array(44, 46, 45), PackedInt32Array(40, 42, 41), PackedInt32Array(41, 42, 43), PackedInt32Array(47, 42, 39), PackedInt32Array(39, 42, 34), PackedInt32Array(44, 31, 43), PackedInt32Array(43, 31, 27), PackedInt32Array(28, 29, 48), PackedInt32Array(51, 50, 49), PackedInt32Array(49, 52, 51), PackedInt32Array(51, 52, 48), PackedInt32Array(48, 52, 28), PackedInt32Array(48, 53, 51), PackedInt32Array(54, 36, 37), PackedInt32Array(57, 56, 55), PackedInt32Array(57, 55, 58), PackedInt32Array(58, 55, 54), PackedInt32Array(58, 54, 37), PackedInt32Array(55, 59, 54), PackedInt32Array(50, 61, 49), PackedInt32Array(49, 61, 60), PackedInt32Array(49, 60, 56), PackedInt32Array(49, 56, 57), PackedInt32Array(61, 45, 60), PackedInt32Array(60, 45, 46)]
-cell_height = 1.8
-border_size = 0.4
+cell_size = 0.25
+cell_height = 0.25
+agent_height = 1.8
+agent_radius = 0.4
+agent_max_climb = 0.25
+agent_max_slope = 45.0
 
 [sub_resource type="StandardMaterial3D" id="mat_floor"]
 albedo_color = Color(0.72, 0.68, 0.6, 1)
@@ -17,226 +19,316 @@ roughness = 0.9
 albedo_color = Color(0.55, 0.52, 0.46, 1)
 roughness = 0.85
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_0"]
+[sub_resource type="StandardMaterial3D" id="mat_box"]
+albedo_color = Color(0.48, 0.38, 0.28, 1)
+roughness = 0.75
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_1"]
+[sub_resource type="StandardMaterial3D" id="mat_site"]
+albedo_color = Color(0.95, 0.85, 0.05, 1)
+emission_enabled = true
+emission = Color(0.5, 0.44, 0.0, 1)
+emission_energy_multiplier = 2.0
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_2"]
+[sub_resource type="BoxMesh" id="BoxMesh_site"]
+size = Vector3(10.0, 0.08, 10.0)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_3"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_siteA"]
+size = Vector3(12, 2, 12)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_4"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_siteB"]
+size = Vector3(12, 2, 12)
 
-[node name="BoxMap" type="Node3D" unique_id=62330735]
+[node name="BoxMap" type="Node3D"]
 
-[node name="NavRegion" type="NavigationRegion3D" parent="." unique_id=2140457408]
+[node name="NavRegion" type="NavigationRegion3D" parent="."]
 navigation_mesh = SubResource("NavigationMesh_k18wa")
 script = ExtResource("3_nb")
 
-[node name="Floor" type="CSGBox3D" parent="NavRegion" unique_id=1295940863]
+[node name="Floor" type="CSGBox3D" parent="NavRegion"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 use_collision = true
-size = Vector3(70, 0.2, 60)
+size = Vector3(70, 0.2, 62)
 material = SubResource("mat_floor")
 
-[node name="Walls" type="Node3D" parent="NavRegion" unique_id=945961272]
+[node name="Walls" type="Node3D" parent="NavRegion"]
 
-[node name="WallNorth" type="CSGBox3D" parent="NavRegion/Walls" unique_id=1206457882]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -30)
+[node name="WallNorth" type="CSGBox3D" parent="NavRegion/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -31)
 use_collision = true
 size = Vector3(70, 3, 0.4)
 material = SubResource("mat_wall")
 
-[node name="WallSouth" type="CSGBox3D" parent="NavRegion/Walls" unique_id=878401978]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 30)
+[node name="WallSouth" type="CSGBox3D" parent="NavRegion/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 31)
 use_collision = true
 size = Vector3(70, 3, 0.4)
 material = SubResource("mat_wall")
 
-[node name="WallWest" type="CSGBox3D" parent="NavRegion/Walls" unique_id=363411831]
+[node name="WallWest" type="CSGBox3D" parent="NavRegion/Walls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35, 1.5, 0)
 use_collision = true
-size = Vector3(0.4, 3, 60)
+size = Vector3(0.4, 3, 62)
 material = SubResource("mat_wall")
 
-[node name="WallEast" type="CSGBox3D" parent="NavRegion/Walls" unique_id=1060204732]
+[node name="WallEast" type="CSGBox3D" parent="NavRegion/Walls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 1.5, 0)
 use_collision = true
-size = Vector3(0.4, 3, 60)
+size = Vector3(0.4, 3, 62)
 material = SubResource("mat_wall")
 
-[node name="InnerWalls" type="Node3D" parent="NavRegion" unique_id=1823066394]
+[node name="InnerWalls" type="Node3D" parent="NavRegion"]
 
-[node name="MidWallWest" type="CSGBox3D" parent="NavRegion/InnerWalls" unique_id=1645311922]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1.5, -15)
+[node name="WallCorrA_North" type="CSGBox3D" parent="NavRegion/InnerWalls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 1.5, -25)
 use_collision = true
 size = Vector3(0.4, 3, 10)
 material = SubResource("mat_wall")
 
-[node name="MidWallEast" type="CSGBox3D" parent="NavRegion/InnerWalls" unique_id=351539453]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1.5, -15)
+[node name="WallCorrA_South" type="CSGBox3D" parent="NavRegion/InnerWalls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 1.5, -2.5)
+use_collision = true
+size = Vector3(0.4, 3, 15)
+material = SubResource("mat_wall")
+
+[node name="WallCorrB_North" type="CSGBox3D" parent="NavRegion/InnerWalls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 1.5, -25)
 use_collision = true
 size = Vector3(0.4, 3, 10)
 material = SubResource("mat_wall")
 
-[node name="SiteAWallNorth" type="CSGBox3D" parent="NavRegion/InnerWalls" unique_id=185322490]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 1.5, 5)
+[node name="WallCorrB_South" type="CSGBox3D" parent="NavRegion/InnerWalls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 1.5, -2.5)
 use_collision = true
-size = Vector3(14, 3, 0.4)
+size = Vector3(0.4, 3, 15)
 material = SubResource("mat_wall")
 
-[node name="SiteAWallEast" type="CSGBox3D" parent="NavRegion/InnerWalls" unique_id=42376529]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 1.5, 14)
+[node name="Cover" type="Node3D" parent="NavRegion"]
+
+[node name="MidBox" type="CSGBox3D" parent="NavRegion/Cover"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 4.5)
 use_collision = true
-size = Vector3(0.4, 3, 18)
-material = SubResource("mat_wall")
+size = Vector3(6, 3, 7)
+material = SubResource("mat_box")
 
-[node name="SiteBWallNorth" type="CSGBox3D" parent="NavRegion/InnerWalls" unique_id=620236703]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 1.5, 5)
+[node name="MidCoverL" type="CSGBox3D" parent="NavRegion/Cover"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1.5, 0)
 use_collision = true
-size = Vector3(14, 3, 0.4)
-material = SubResource("mat_wall")
+size = Vector3(3, 3, 3)
+material = SubResource("mat_box")
 
-[node name="SiteBWallWest" type="CSGBox3D" parent="NavRegion/InnerWalls" unique_id=1514746313]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 1.5, 14)
+[node name="MidCoverR" type="CSGBox3D" parent="NavRegion/Cover"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1.5, 0)
 use_collision = true
-size = Vector3(0.4, 3, 18)
-material = SubResource("mat_wall")
+size = Vector3(3, 3, 3)
+material = SubResource("mat_box")
 
-[node name="CTSpawnWall" type="CSGBox3D" parent="NavRegion/InnerWalls" unique_id=807381008]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1.5, -22)
+[node name="CoverA1" type="CSGBox3D" parent="NavRegion/Cover"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 1.5, -22)
 use_collision = true
-size = Vector3(0.4, 3, 14)
-material = SubResource("mat_wall")
+size = Vector3(3, 3, 3)
+material = SubResource("mat_box")
 
-[node name="TSpawnWall" type="CSGBox3D" parent="NavRegion/InnerWalls" unique_id=29927819]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 1.5, -22)
+[node name="CoverA2" type="CSGBox3D" parent="NavRegion/Cover"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 1.5, -20)
 use_collision = true
-size = Vector3(0.4, 3, 14)
-material = SubResource("mat_wall")
+size = Vector3(3, 3, 3)
+material = SubResource("mat_box")
 
-[node name="Zones" type="Node3D" parent="." unique_id=143928914]
+[node name="CoverA3" type="CSGBox3D" parent="NavRegion/Cover"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 1.5, -10)
+use_collision = true
+size = Vector3(4, 3, 3)
+material = SubResource("mat_box")
 
-[node name="ZoneCTSpawn" type="Area3D" parent="Zones" unique_id=363150146]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, -20)
-collision_layer = 32
-collision_mask = 0
+[node name="CoverB1" type="CSGBox3D" parent="NavRegion/Cover"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 1.5, -22)
+use_collision = true
+size = Vector3(3, 3, 3)
+material = SubResource("mat_box")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Zones/ZoneCTSpawn" unique_id=1389265093]
-shape = SubResource("BoxShape3D_0")
+[node name="CoverB2" type="CSGBox3D" parent="NavRegion/Cover"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 1.5, -20)
+use_collision = true
+size = Vector3(3, 3, 3)
+material = SubResource("mat_box")
 
-[node name="ZoneTSpawn" type="Area3D" parent="Zones" unique_id=1491889718]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, -20)
-collision_layer = 32
-collision_mask = 0
+[node name="CoverB3" type="CSGBox3D" parent="NavRegion/Cover"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 1.5, -10)
+use_collision = true
+size = Vector3(4, 3, 3)
+material = SubResource("mat_box")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Zones/ZoneTSpawn" unique_id=1940169840]
-shape = SubResource("BoxShape3D_1")
+[node name="Zones" type="Node3D" parent="."]
 
-[node name="ZoneMid" type="Area3D" parent="Zones" unique_id=2046043853]
-collision_layer = 32
-collision_mask = 0
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Zones/ZoneMid" unique_id=811668357]
-shape = SubResource("BoxShape3D_2")
-
-[node name="ZoneSiteA" type="Area3D" parent="Zones" unique_id=1217704466]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 15)
+[node name="ZoneSiteA" type="Area3D" parent="Zones"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 0, -18)
 collision_layer = 32
 collision_mask = 0
 script = ExtResource("2_bs")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Zones/ZoneSiteA" unique_id=1580380571]
-shape = SubResource("BoxShape3D_3")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Zones/ZoneSiteA"]
+shape = SubResource("BoxShape3D_siteA")
 
-[node name="ZoneSiteB" type="Area3D" parent="Zones" unique_id=1107374380]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 15)
+[node name="ZoneSiteB" type="Area3D" parent="Zones"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, -18)
 collision_layer = 32
 collision_mask = 0
 script = ExtResource("2_bs")
 site_id = "B"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Zones/ZoneSiteB" unique_id=801588107]
-shape = SubResource("BoxShape3D_4")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Zones/ZoneSiteB"]
+shape = SubResource("BoxShape3D_siteB")
 
-[node name="SpawnPoints" type="Node3D" parent="." unique_id=853050357]
+[node name="Visuals" type="Node3D" parent="."]
 
-[node name="CT_Spawn_1" type="Marker3D" parent="SpawnPoints" unique_id=1015228906]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, -22)
+[node name="SiteA_Marker" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 0.05, -18)
+mesh = SubResource("BoxMesh_site")
+surface_material_override/0 = SubResource("mat_site")
 
-[node name="CT_Spawn_2" type="Marker3D" parent="SpawnPoints" unique_id=740255641]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, -22)
+[node name="SiteB_Marker" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.05, -18)
+mesh = SubResource("BoxMesh_site")
+surface_material_override/0 = SubResource("mat_site")
 
-[node name="CT_Spawn_3" type="Marker3D" parent="SpawnPoints" unique_id=775380482]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, -18)
+[node name="SpawnPoints" type="Node3D" parent="."]
 
-[node name="CT_Spawn_4" type="Marker3D" parent="SpawnPoints" unique_id=992955234]
+[node name="T_Spawn_1" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, -26)
+
+[node name="T_Spawn_2" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -26)
+
+[node name="T_Spawn_3" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -26)
+
+[node name="T_Spawn_4" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, -26)
+
+[node name="T_Spawn_5" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, -26)
+
+[node name="CT_Spawn_1" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 0, 26)
+
+[node name="CT_Spawn_2" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 26)
+
+[node name="CT_Spawn_3" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 26)
+
+[node name="CT_Spawn_4" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, 26)
+
+[node name="CT_Spawn_5" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 0, 26)
+
+[node name="PatrolPoints" type="Node3D" parent="."]
+
+[node name="CT_SiteA_1" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 0, 22)
+
+[node name="CT_SiteA_2" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0, 12)
+
+[node name="CT_SiteA_3" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0, 2)
+
+[node name="CT_SiteA_4" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 0, -8)
+
+[node name="CT_SiteA_5" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 0, -16)
+
+[node name="CT_SiteA_6" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 0, -4)
+
+[node name="CT_MidA_1" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 22)
+
+[node name="CT_MidA_2" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 10)
+
+[node name="CT_MidA_3" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -2)
+
+[node name="CT_MidA_4" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, -12)
+
+[node name="CT_MidA_5" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, -16)
+
+[node name="CT_MidA_6" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 0, -18)
+
+[node name="CT_SiteB_1" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 0, 22)
+
+[node name="CT_SiteB_2" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0, 12)
+
+[node name="CT_SiteB_3" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0, 2)
+
+[node name="CT_SiteB_4" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 0, -8)
+
+[node name="CT_SiteB_5" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, -16)
+
+[node name="CT_SiteB_6" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 0, -4)
+
+[node name="T_RushA_1" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, -26)
+
+[node name="T_RushA_2" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0, -24)
+
+[node name="T_RushA_3" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0, -20)
+
+[node name="T_RushA_4" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0, -18)
+
+[node name="T_RushA_5" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 0, -20)
+
+[node name="T_RushA_6" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 0, -14)
+
+[node name="T_MidA_1" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -26)
+
+[node name="T_MidA_2" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -22)
+
+[node name="T_MidA_3" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -18)
+
+[node name="T_MidA_4" type="Marker3D" parent="PatrolPoints"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, -18)
 
-[node name="CT_Spawn_5" type="Marker3D" parent="SpawnPoints" unique_id=2084135911]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, -24)
+[node name="T_MidA_5" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 0, -18)
 
-[node name="T_Spawn_1" type="Marker3D" parent="SpawnPoints" unique_id=1899773646]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, -22)
+[node name="T_MidA_6" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, -22)
 
-[node name="T_Spawn_2" type="Marker3D" parent="SpawnPoints" unique_id=353539002]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, -22)
+[node name="T_RushB_1" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, -26)
 
-[node name="T_Spawn_3" type="Marker3D" parent="SpawnPoints" unique_id=1578698719]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, -18)
+[node name="T_RushB_2" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0, -24)
 
-[node name="T_Spawn_4" type="Marker3D" parent="SpawnPoints" unique_id=2023182238]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, -18)
+[node name="T_RushB_3" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0, -20)
 
-[node name="T_Spawn_5" type="Marker3D" parent="SpawnPoints" unique_id=556600278]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, -24)
+[node name="T_RushB_4" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0, -18)
 
-[node name="PatrolPoints" type="Node3D" parent="." unique_id=700000001]
+[node name="T_RushB_5" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, -20)
 
-[node name="CT_SiteA_1" type="Marker3D" parent="PatrolPoints" unique_id=700000010]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, -15)
-
-[node name="CT_SiteA_2" type="Marker3D" parent="PatrolPoints" unique_id=700000011]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, -5)
-
-[node name="CT_SiteA_3" type="Marker3D" parent="PatrolPoints" unique_id=700000012]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 5)
-
-[node name="CT_SiteA_4" type="Marker3D" parent="PatrolPoints" unique_id=700000013]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, 15)
-
-[node name="CT_SiteB_1" type="Marker3D" parent="PatrolPoints" unique_id=700000020]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, -15)
-
-[node name="CT_SiteB_2" type="Marker3D" parent="PatrolPoints" unique_id=700000021]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, -5)
-
-[node name="CT_SiteB_3" type="Marker3D" parent="PatrolPoints" unique_id=700000022]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 5)
-
-[node name="CT_SiteB_4" type="Marker3D" parent="PatrolPoints" unique_id=700000023]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, 15)
-
-[node name="T_RushA_1" type="Marker3D" parent="PatrolPoints" unique_id=700000030]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, -18)
-
-[node name="T_RushA_2" type="Marker3D" parent="PatrolPoints" unique_id=700000031]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -5)
-
-[node name="T_RushA_3" type="Marker3D" parent="PatrolPoints" unique_id=700000032]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 10)
-
-[node name="T_RushA_4" type="Marker3D" parent="PatrolPoints" unique_id=700000033]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, 15)
-
-[node name="T_RushB_1" type="Marker3D" parent="PatrolPoints" unique_id=700000040]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, -18)
-
-[node name="T_RushB_2" type="Marker3D" parent="PatrolPoints" unique_id=700000041]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, -5)
-
-[node name="T_RushB_3" type="Marker3D" parent="PatrolPoints" unique_id=700000042]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 8)
-
-[node name="T_RushB_4" type="Marker3D" parent="PatrolPoints" unique_id=700000043]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, 15)
+[node name="T_RushB_6" type="Marker3D" parent="PatrolPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 0, -14)

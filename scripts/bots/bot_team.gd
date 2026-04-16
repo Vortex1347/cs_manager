@@ -94,9 +94,13 @@ func _on_suppression_requested(reporter_id: int, pos: Vector3, priority: float) 
 	if best_id != -1:
 		emit_signal("suppression_assigned", best_id, pos)
 
-func _on_bot_died(bot_id: int, _killer_id: int) -> void:
-	blackboard["active_count"] = max(0, blackboard["active_count"] - 1)
-	if blackboard["active_count"] == 0:
+func _on_bot_died(_bot_id: int, _killer_id: int) -> void:
+	var alive: int = 0
+	for brain in bots.values():
+		if brain.current_state != BotBrain.BotState.DEAD:
+			alive += 1
+	blackboard["active_count"] = alive
+	if alive == 0:
 		emit_signal("all_bots_dead")
 
 # ── Ротация CT ───────────────────────────────────────────────────────────────
