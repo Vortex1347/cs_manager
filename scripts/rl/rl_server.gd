@@ -7,6 +7,10 @@ extends Node
 class_name RLServer
 
 const PORT := 9002
+# Отправлять observations Python раз в N physics-кадров.
+# При 60fps и FRAME_SKIP=3 → 20 решений/сек — Python успевает отвечать.
+# Меньше дёрганности: бот применяет одно действие 3 кадра подряд, не ждёт.
+const FRAME_SKIP: int = 3
 
 var _ws    := WebSocketMultiplayerPeer.new()
 var _obs   := BotObserver.new()
@@ -15,6 +19,7 @@ var _rewards: Dictionary = {}        # bot_id → float  (накопленная
 var _dones:   Dictionary = {}        # bot_id → bool
 var is_connected: bool = false
 var _peer_count: int = 0
+var _frame_counter: int = 0
 
 signal python_connected
 signal python_disconnected
@@ -55,9 +60,13 @@ func _process(_d: float) -> void:
 			for a in data["actions"]:
 				_pending[int(a["id"])] = a
 
-# Вызывается из game_manager каждый physics-кадр
+# Вызывается из game_manager каждый physics-кадр.
+# Observations отправляются только раз в FRAME_SKIP кадров — даёт Python время ответить.
 func send_step(all_bots: Array) -> void:
 	if not is_connected:
+		return
+	_frame_counter += 1
+	if _frame_counter % FRAME_SKIP != 0:
 		return
 	var batch := []
 	for bot in all_bots:

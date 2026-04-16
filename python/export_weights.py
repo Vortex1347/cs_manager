@@ -44,7 +44,8 @@ def export(model_path: str, out_path: str) -> None:
         b = np.array(layer["b"])
         print(f"  Слой {i}: {w.shape[1]} → {w.shape[0]}")
 
-    result = {"layers": layers, "obs_size": 20, "action_size": 18}
+    obs_size = int(np.array(layers[0]["w"]).shape[1])
+    result = {"layers": layers, "obs_size": obs_size, "action_size": 18}
     with open(out_path, "w") as f:
         json.dump(result, f)
 

@@ -14,6 +14,10 @@ import gymnasium as gym
 import numpy as np
 import websocket
 
+# Значения reward, по которым детектируем события (должны совпадать с game_manager.gd)
+_REWARD_KILL   = 2.0   # убийство врага
+_REWARD_DEATH  = -1.0  # собственная смерть
+
 
 class GodotCSEnv(gym.Env):
     """
@@ -46,6 +50,12 @@ class GodotCSEnv(gym.Env):
         self._step_event = threading.Event()
         self._connected = threading.Event()
 
+        # Per-episode статистика (видна в консоли при обучении)
+        self._ep_reward: float = 0.0
+        self._ep_kills: int = 0
+        self._ep_deaths: int = 0
+        self._ep_steps: int = 0
+
         self.ws = websocket.WebSocketApp(
             url,
             on_open=self._on_open,
@@ -63,7 +73,13 @@ class GodotCSEnv(gym.Env):
     def _on_open(self, ws):
         self._connected.set()
 
-    def _on_message(self, ws, raw: str):
+    def _on_message(self, ws, raw):
+        # Godot WebSocketMultiplayerPeer шлёт бинарные фреймы — декодируем вручную
+        if isinstance(raw, bytes):
+            try:
+                raw = raw.decode("utf-8")
+            except UnicodeDecodeError:
+                return
         try:
             data = json.loads(raw)
         except json.JSONDecodeError:
@@ -94,9 +110,31 @@ class GodotCSEnv(gym.Env):
         # Ждём следующий кадр от Godot (max 200ms)
         self._step_event.wait(timeout=0.2)
         with self._lock:
-            obs = self._obs.copy()
+            obs    = self._obs.copy()
             reward = self._reward
-            done = self._done
+            done   = self._done
+
+        # Обновляем per-episode счётчики
+        self._ep_reward += reward
+        self._ep_steps  += 1
+        if abs(reward - _REWARD_KILL) < 0.01:
+            self._ep_kills += 1
+        if abs(reward - _REWARD_DEATH) < 0.01:
+            self._ep_deaths += 1
+
+        if done:
+            print(
+                f"[Bot {self.bot_id:2d}] "
+                f"steps={self._ep_steps:4d}  "
+                f"kills={self._ep_kills}  "
+                f"deaths={self._ep_deaths}  "
+                f"reward={self._ep_reward:+.2f}"
+            )
+            self._ep_reward = 0.0
+            self._ep_kills  = 0
+            self._ep_deaths = 0
+            self._ep_steps  = 0
+
         return obs, reward, done, False, {}
 
     def reset(self, *, seed=None, options=None):

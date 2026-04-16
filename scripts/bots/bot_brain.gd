@@ -173,9 +173,18 @@ func _state_spotted(_delta: float) -> void:
 		_face_toward(last_known_enemy_pos)
 
 func _state_engage(_delta: float) -> void:
-	# CT: попробовать дефузить бомбу если рядом
-	if stats.team == BotStats.Team.CT:
+	# CT: если бомба заложена — дефуз важнее боя, бежим на сайт
+	if stats.team == BotStats.Team.CT and _bomb_site_target != Vector3.ZERO:
+		_navigate_to(_bomb_site_target)
+		_move_toward_target(nav_agent.get_next_path_position())
 		_try_defuse()
+		# Стреляем на ходу если видим врага
+		if not visible_enemies.is_empty() and weapon and weapon.has_method("try_fire"):
+			_face_toward(visible_enemies[0].global_position)
+			weapon.try_fire(visible_enemies[0], stats)
+		if _should_retreat():
+			_change_state(BotState.RETREAT)
+		return
 
 	if visible_enemies.is_empty():
 		# Враг исчез — проверяем память
@@ -423,11 +432,11 @@ func on_bomb_dropped(drop_pos: Vector3) -> void:
 			_navigate_to(drop_pos)
 
 func on_bomb_planted(site_pos: Vector3) -> void:
-	# CT: цель — бежать дефузить; T non-carrier: цель — защищать
+	# CT: дефузить — высший приоритет, бежим немедленно из любого состояния
+	# T non-carrier: защищать заложенную бомбу
 	if stats.team == BotStats.Team.CT or (stats.team == BotStats.Team.T and not _is_bomb_carrier):
 		_bomb_site_target = site_pos
-		if current_state == BotState.PATROL or current_state == BotState.IDLE:
-			_navigate_to(site_pos)
+		_navigate_to(site_pos)
 
 func receive_team_intel(enemy_id: int, pos: Vector3) -> void:
 	# Обновляем известную позицию врага от команды

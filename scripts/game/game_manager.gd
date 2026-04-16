@@ -133,13 +133,21 @@ func _wire_systems() -> void:
 		for bot in team_ct.get_children():
 			if bot.has_method("start_round"):
 				bot.bot_died.connect(_on_bot_died_rl)
+				bot.damage_taken.connect(_on_damage_taken_rl)
 		for bot in team_t.get_children():
 			if bot.has_method("start_round"):
 				bot.bot_died.connect(_on_bot_died_rl)
+				bot.damage_taken.connect(_on_damage_taken_rl)
 		round_manager.round_ended.connect(_on_round_ended_rl)
 
 	team_ct_script.all_bots_dead.connect(func(): round_manager.end_round("T", "elimination"))
-	team_t_script.all_bots_dead.connect(func(): round_manager.end_round("CT", "elimination"))
+	# Если бомба уже заложена — раунд не заканчивается, ждём взрыва или дефуза
+	team_t_script.all_bots_dead.connect(func():
+		for site in get_tree().get_nodes_in_group("bombsites"):
+			if site.bomb_planted and not site.bomb_exploded_flag:
+				return  # бомба тикает — CT должны дефузить
+		round_manager.end_round("CT", "elimination")
+	)
 
 	# Подключить бомбсайты
 	for site_path in ["Zones/ZoneSiteA", "Zones/ZoneSiteB"]:
@@ -148,11 +156,16 @@ func _wire_systems() -> void:
 			continue
 		site.plant_started.connect(func(sid, _bid): _set_bomb_status("💣 Сажают бомбу на %s..." % sid))
 		site.plant_completed.connect(func(sid):
-			economy.reward_plant(_get_bomb_carrier_id())
+			var carrier_id := _get_bomb_carrier_id()
+			# Убираем индикатор бомбы с носителя — бомба уже лежит на сайте
+			for bot in team_t.get_children():
+				if bot.has_method("set_bomb_carrier") and bot._is_bomb_carrier:
+					bot.set_bomb_carrier(false)
+			economy.reward_plant(carrier_id)
 			_notify_bomb_planted(site.global_position)
 			_set_bomb_status("💣 БОМБА НА САЙТЕ %s!" % sid)
 			if self._rl_server:
-				self._rl_server.add_reward(_get_bomb_carrier_id(), 5.0)
+				self._rl_server.add_reward(carrier_id, 5.0)
 		)
 		site.defuse_started.connect(func(sid, _bid): _set_bomb_status("🔧 Дефузят на %s..." % sid))
 		site.defuse_completed.connect(func(sid):
@@ -246,7 +259,6 @@ func _on_round_started(_round_num: int) -> void:
 			s.reset()
 
 	_set_bomb_status("")
-	_update_hud_health()
 
 	var ct_idx: int = 0
 	for bot in team_ct.get_children():
@@ -260,8 +272,9 @@ func _on_round_started(_round_num: int) -> void:
 		bot.start_round()
 		ct_idx += 1
 
+	# Сначала сбрасываем всех T, потом случайно назначаем bomb carrier
+	var t_bots_alive: Array = []
 	var t_idx: int = 0
-	var bomb_assigned: bool = false
 	for bot in team_t.get_children():
 		if not bot.has_method("start_round"):
 			continue
@@ -271,11 +284,17 @@ func _on_round_started(_round_num: int) -> void:
 			if m:
 				bot.global_position = m.global_position
 		bot.start_round()
-		# Назначаем после start_round() — иначе start_round сбросит флаг
-		if not bomb_assigned and bot.has_method("set_bomb_carrier"):
-			bot.set_bomb_carrier(true)
-			bomb_assigned = true
+		t_bots_alive.append(bot)
 		t_idx += 1
+
+	# Рандомный носитель бомбы каждый раунд
+	if not t_bots_alive.is_empty():
+		var carrier = t_bots_alive[randi() % t_bots_alive.size()]
+		if carrier.has_method("set_bomb_carrier"):
+			carrier.set_bomb_carrier(true)
+
+	# HUD после reset_hp() у всех ботов
+	_update_hud_health()
 
 func _on_bot_died(bot_id: int, killer_id: int) -> void:
 	if killer_id >= 0:
@@ -451,41 +470,100 @@ func _physics_process(_delta: float) -> void:
 		_shape_rewards(all_bots)
 		_rl_server.send_step(all_bots)
 
-# Dense reward shaping — небольшая награда за приближение к цели (раз в кадр).
-# T-carrier → идёт к ближайшему сайту. CT после plant → бежит к заложенной бомбе.
+# ── Reward shaping — каждый physics-кадр ─────────────────────────────────────
+#
+#  ПОВЕДЕНИЕ 1: CT RUSH DEFUSE
+#    Когда бомба заложена — CT получает reward за приближение к сайту.
+#    Множитель 0.03 (в 3× сильнее базового) → CT учится бежать немедленно.
+#    Бонус +0.05/кадр если уже стоит рядом (< 4м) и дефузит.
+#
+#  ПОВЕДЕНИЕ 2: T RUSH TOGETHER (кластеризация)
+#    T non-carrier получает reward за нахождение рядом с bomb carrier (< CLUSTER_DIST м).
+#    Это учит ботов идти вместе — не разбегаться в разные стороны.
+#    Чем ближе к carrier — тем больше награда.
+#
+#  ПОВЕДЕНИЕ 3: T PROTECT PLANTED BOMB
+#    После того как бомба заложена — T non-carrier должен идти защищать сайт.
+#    Получает approach reward к planted_site (такой же как CT, но мотивация — защита).
+
+const CLUSTER_DIST: float = 8.0     # метров — "быть вместе" с carrier
+const DEFUSE_PROXIMITY: float = 4.0  # метров — "стоишь у бомбы"
+
 func _shape_rewards(all_bots: Array) -> void:
 	var planted_site: Node = null
 	for site in get_tree().get_nodes_in_group("bombsites"):
 		if site.bomb_planted and not site.bomb_exploded_flag:
 			planted_site = site
 			break
+
+	# Найти bomb carrier для кластеризации T
+	var carrier_pos: Vector3 = Vector3.ZERO
+	for bot in all_bots:
+		if bot._is_bomb_carrier and bot.stats.team == BotStats.Team.T and bot._is_live:
+			carrier_pos = bot.global_position
+			break
+
 	for bot in all_bots:
 		if not bot._is_live or bot.current_state == BotBrain.BotState.DEAD:
 			continue
 		var bid: int = bot.stats.bot_id
+
+		# Survival reward
+		_rl_server.add_reward(bid, 0.002)
+
 		var goal_pos: Vector3 = Vector3.ZERO
-		if planted_site and bot.stats.team == BotStats.Team.CT:
-			goal_pos = planted_site.global_position
-		elif bot._is_bomb_carrier and bot.stats.team == BotStats.Team.T:
-			var nearest: Node = null
-			var best_d: float = INF
-			for site2 in get_tree().get_nodes_in_group("bombsites"):
-				if site2.bomb_planted: continue
-				var dd: float = bot.global_position.distance_to(site2.global_position)
-				if dd < best_d:
-					best_d = dd
-					nearest = site2
-			if nearest:
-				goal_pos = nearest.global_position
+		var approach_mult: float = 0.01  # базовый множитель
+
+		if bot.stats.team == BotStats.Team.CT:
+			if planted_site:
+				# ПОВЕДЕНИЕ 1: CT rush defuse
+				goal_pos = planted_site.global_position
+				approach_mult = 0.03  # в 3× сильнее — высокий приоритет
+				# Бонус за нахождение вплотную к бомбе
+				var dist_to_bomb: float = bot.global_position.distance_to(goal_pos)
+				if dist_to_bomb < DEFUSE_PROXIMITY:
+					_rl_server.add_reward(bid, 0.05)
+
+		elif bot.stats.team == BotStats.Team.T:
+			if bot._is_bomb_carrier:
+				# Carrier идёт плентить
+				var nearest: Node = null
+				var best_d: float = INF
+				for site2 in get_tree().get_nodes_in_group("bombsites"):
+					if site2.bomb_planted: continue
+					var dd: float = bot.global_position.distance_to(site2.global_position)
+					if dd < best_d:
+						best_d = dd
+						nearest = site2
+				if nearest:
+					goal_pos = nearest.global_position
+					approach_mult = 0.02
+
+			elif planted_site:
+				# ПОВЕДЕНИЕ 3: T non-carrier защищает заложенную бомбу
+				goal_pos = planted_site.global_position
+				approach_mult = 0.02
+
+			elif carrier_pos != Vector3.ZERO:
+				# ПОВЕДЕНИЕ 2: T non-carrier держится рядом с carrier
+				var dist_to_carrier: float = bot.global_position.distance_to(carrier_pos)
+				if dist_to_carrier < CLUSTER_DIST:
+					# Чем ближе — тем больше: max +0.006/кадр при dist=0
+					var cluster_reward: float = (1.0 - dist_to_carrier / CLUSTER_DIST) * 0.006
+					_rl_server.add_reward(bid, cluster_reward)
+				else:
+					# Далеко от carrier — approach reward к нему
+					goal_pos = carrier_pos
+					approach_mult = 0.015
+
 		if goal_pos == Vector3.ZERO:
 			_prev_goal_dist.erase(bid)
 			continue
 		var cur_d: float = bot.global_position.distance_to(goal_pos)
 		if _prev_goal_dist.has(bid):
 			var delta_d: float = _prev_goal_dist[bid] - cur_d
-			# Шейпинг: +0.01 за каждый метр приближения (около 0.04/кадр на скорости 4)
 			if delta_d > 0.0:
-				_rl_server.add_reward(bid, delta_d * 0.01)
+				_rl_server.add_reward(bid, delta_d * approach_mult)
 		_prev_goal_dist[bid] = cur_d
 
 func _enable_rl_on_bots() -> void:
@@ -503,6 +581,14 @@ func _on_bot_died_rl(bot_id: int, killer_id: int) -> void:
 	if killer_id >= 0:
 		_rl_server.add_reward(killer_id, 2.0)  # убийца получает +2
 	_rl_server.set_done(bot_id)
+
+# Reward за нанесённый урон — вызывается через damage_taken сигнал.
+# source_id = убийца, amount = нанесённый урон. +0.02 за каждую единицу HP.
+func _on_damage_taken_rl(_bot_id: int, amount: int, source_id: int) -> void:
+	if not _rl_server:
+		return
+	if source_id >= 0:
+		_rl_server.add_reward(source_id, float(amount) * 0.02)
 
 func _on_round_ended_rl(winner: String, _reason: String) -> void:
 	if not _rl_server:
