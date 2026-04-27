@@ -16,6 +16,8 @@ const FRAG_RADIUS: float = 3.5
 const FRAG_DAMAGE: int = 85
 const SMOKE_RADIUS: float = 5.0
 const FLASH_RADIUS: float = 15.0
+const THROW_GRAVITY: float = 22.0
+const MIN_FUSE_TIME: float = 0.2
 
 @export var grenade_type: GrenadeType = GrenadeType.FRAG
 
@@ -23,17 +25,23 @@ var _thrower_id: int = -1
 var _fuse_timer: float = 0.0
 var _active: bool = false
 var _smoke_body: StaticBody3D = null  # создаётся при детонации смоука
+var _mesh: MeshInstance3D = null
 
-func throw(from: Vector3, direction: Vector3, thrower_id: int) -> void:
+func _ready() -> void:
+	_mesh = get_node_or_null("MeshInstance3D")
+	_update_visual()
+
+func throw(from: Vector3, velocity_vector: Vector3, thrower_id: int, fuse_time: float = FUSE_TIME) -> void:
 	global_position = from
-	linear_velocity = direction * 12.0 + Vector3(0, 4.0, 0)
+	linear_velocity = velocity_vector
 	_thrower_id = thrower_id
 	_active = true
-	_fuse_timer = FUSE_TIME
+	_fuse_timer = maxf(fuse_time, MIN_FUSE_TIME)
 
 func _process(delta: float) -> void:
 	if not _active:
 		return
+	linear_velocity.y -= THROW_GRAVITY * delta
 	_fuse_timer -= delta
 	if _fuse_timer <= 0.0:
 		_detonate()
@@ -102,4 +110,33 @@ func _detonate_frag() -> void:
 			var dist = global_position.distance_to(body.global_position)
 			var falloff = 1.0 - (dist / FRAG_RADIUS)
 			var actual_damage = int(FRAG_DAMAGE * falloff)
-			body.apply_damage(actual_damage, _thrower_id)
+			body.apply_damage(max(actual_damage, 1), _thrower_id, global_position)
+
+func get_type_name() -> String:
+	return GrenadeType.keys()[grenade_type].to_lower()
+
+func set_grenade_type_by_name(type_name: String) -> void:
+	match type_name.to_lower():
+		"smoke":
+			grenade_type = GrenadeType.SMOKE
+		"flash":
+			grenade_type = GrenadeType.FLASH
+		_:
+			grenade_type = GrenadeType.FRAG
+	_update_visual()
+
+func _update_visual() -> void:
+	if _mesh == null:
+		return
+	var mat = StandardMaterial3D.new()
+	match grenade_type:
+		GrenadeType.SMOKE:
+			mat.albedo_color = Color(0.35, 0.45, 0.5)
+		GrenadeType.FLASH:
+			mat.albedo_color = Color(1.0, 0.95, 0.45)
+			mat.emission_enabled = true
+			mat.emission = Color(1.0, 0.95, 0.55)
+			mat.emission_energy_multiplier = 1.5
+		GrenadeType.FRAG:
+			mat.albedo_color = Color(0.4, 0.6, 0.2)
+	_mesh.material_override = mat

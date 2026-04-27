@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/pause_controller.gd" id="1_pc"]
+[ext_resource type="Script" path="res://scripts/ui/hud_icon.gd" id="2_hi"]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_pc")
@@ -9,51 +10,152 @@ script = ExtResource("1_pc")
 anchors_preset = 1
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -150.0
-offset_right = 150.0
-offset_top = 8.0
+offset_left = -250.0
+offset_right = 250.0
+offset_top = 10.0
 offset_bottom = 40.0
+alignment = 1
+theme_override_constants/separation = 18
 
 [node name="ScoreCT" type="Label" parent="ScoreBar"]
-custom_minimum_size = Vector2(100, 0)
-text = "CT: 0"
+custom_minimum_size = Vector2(112, 0)
+text = "0 · 5"
 horizontal_alignment = 2
+modulate = Color(0.58, 0.84, 1, 1)
 
-[node name="Separator" type="Label" parent="ScoreBar"]
-text = " : "
+[node name="PhaseLabel" type="Label" parent="ScoreBar"]
+custom_minimum_size = Vector2(66, 0)
+text = "BUY"
+horizontal_alignment = 1
 
-[node name="ScoreT" type="Label" parent="ScoreBar"]
-custom_minimum_size = Vector2(100, 0)
-text = "T: 0"
-
-[node name="TimerLabel" type="Label" parent="."]
-anchors_preset = 1
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -50.0
-offset_right = 50.0
-offset_top = 44.0
-offset_bottom = 68.0
+[node name="TimerLabel" type="Label" parent="ScoreBar"]
+custom_minimum_size = Vector2(90, 0)
 text = "1:55"
 horizontal_alignment = 1
 
-[node name="PhaseLabel" type="Label" parent="."]
-anchors_preset = 5
+[node name="ScoreT" type="Label" parent="ScoreBar"]
+custom_minimum_size = Vector2(112, 0)
+text = "0 · 5"
+horizontal_alignment = 0
+modulate = Color(1, 0.71, 0.34, 1)
+
+[node name="StatusRow" type="HBoxContainer" parent="."]
+anchors_preset = 1
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -100.0
-offset_right = 100.0
-offset_top = 70.0
-offset_bottom = 90.0
-text = "BUY PHASE"
-horizontal_alignment = 1
+offset_left = -340.0
+offset_right = 340.0
+offset_top = 48.0
+offset_bottom = 78.0
+alignment = 1
+theme_override_constants/separation = 14
+
+[node name="BombItem" type="HBoxContainer" parent="StatusRow"]
+theme_override_constants/separation = 4
+
+[node name="BombIcon" type="Control" parent="StatusRow/BombItem"]
+custom_minimum_size = Vector2(18, 18)
+script = ExtResource("2_hi")
+icon_name = "bomb"
+accent = Color(1, 0.82, 0.19, 1)
+
+[node name="BombStatus" type="Label" parent="StatusRow/BombItem"]
+text = "IDLE"
+modulate = Color(1, 0.84, 0.15, 1)
+
+[node name="BombTimerLabel" type="Label" parent="StatusRow/BombItem"]
+text = ""
+modulate = Color(1, 0.62, 0.22, 1)
+
+[node name="SiteItem" type="HBoxContainer" parent="StatusRow"]
+theme_override_constants/separation = 4
+
+[node name="SiteIcon" type="Control" parent="StatusRow/SiteItem"]
+custom_minimum_size = Vector2(18, 18)
+script = ExtResource("2_hi")
+icon_name = "site_a"
+accent = Color(0.96, 0.83, 0.28, 1)
+
+[node name="SiteLabel" type="Label" parent="StatusRow/SiteItem"]
+text = "A"
+
+[node name="CTPlanItem" type="HBoxContainer" parent="StatusRow"]
+theme_override_constants/separation = 4
+
+[node name="CTPlanIcon" type="Control" parent="StatusRow/CTPlanItem"]
+custom_minimum_size = Vector2(18, 18)
+script = ExtResource("2_hi")
+icon_name = "hold"
+accent = Color(0.58, 0.84, 1, 1)
+
+[node name="CTPlanLabel" type="Label" parent="StatusRow/CTPlanItem"]
+text = "H"
+modulate = Color(0.58, 0.84, 1, 1)
+
+[node name="StrategyItem" type="HBoxContainer" parent="StatusRow"]
+theme_override_constants/separation = 4
+
+[node name="StrategyIcon" type="Control" parent="StatusRow/StrategyItem"]
+custom_minimum_size = Vector2(18, 18)
+script = ExtResource("2_hi")
+icon_name = "rush"
+accent = Color(1, 0.71, 0.34, 1)
+
+[node name="StrategyLabel" type="Label" parent="StatusRow/StrategyItem"]
+text = "A"
+modulate = Color(1, 0.71, 0.34, 1)
+
+[node name="UtilityItem" type="HBoxContainer" parent="StatusRow"]
+theme_override_constants/separation = 4
+
+[node name="UtilityIcon" type="Control" parent="StatusRow/UtilityItem"]
+custom_minimum_size = Vector2(18, 18)
+script = ExtResource("2_hi")
+icon_name = "utility"
+accent = Color(1, 0.88, 0.52, 1)
+
+[node name="UtilityMiniLabel" type="Label" parent="StatusRow/UtilityItem"]
+text = "-"
+modulate = Color(1, 0.88, 0.52, 1)
+
+[node name="ObserverSummary" type="HBoxContainer" parent="."]
+visible = false
+anchors_preset = 1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -520.0
+offset_right = 520.0
+offset_top = 82.0
+offset_bottom = 110.0
+alignment = 1
+theme_override_constants/separation = 10
+
+[node name="CombatLabel" type="Label" parent="ObserverSummary"]
+text = "combat quiet"
+modulate = Color(0.95, 0.65, 0.35, 1)
+
+[node name="IntelLabel" type="Label" parent="ObserverSummary"]
+text = "intel quiet"
+modulate = Color(0.75, 0.95, 0.75, 1)
+
+[node name="GunfightLabel" type="Label" parent="ObserverSummary"]
+text = "gun quiet"
+modulate = Color(0.95, 0.78, 0.55, 1)
+
+[node name="LineupDebugLabel" type="Label" parent="ObserverSummary"]
+text = "L off"
+modulate = Color(0.82, 0.82, 0.82, 1)
+
+[node name="CombatDebugLabel" type="Label" parent="ObserverSummary"]
+text = "K off"
+modulate = Color(0.82, 0.82, 0.82, 1)
 
 [node name="PauseOverlay" type="ColorRect" parent="."]
 visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0, 0, 0, 0.6)
+color = Color(0, 0, 0, 0.58)
 
 [node name="CenterContainer" type="CenterContainer" parent="PauseOverlay"]
 anchors_preset = 15
@@ -61,97 +163,104 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PauseOverlay/CenterContainer"]
-custom_minimum_size = Vector2(300, 0)
+custom_minimum_size = Vector2(320, 0)
+theme_override_constants/separation = 10
 
 [node name="PausedLabel" type="Label" parent="PauseOverlay/CenterContainer/VBoxContainer"]
 text = "PAUSED"
 horizontal_alignment = 1
 
-[node name="StrategyButtons" type="VBoxContainer" parent="PauseOverlay/CenterContainer/VBoxContainer"]
+[node name="StrategyButtons" type="HBoxContainer" parent="PauseOverlay/CenterContainer/VBoxContainer"]
+alignment = 1
+theme_override_constants/separation = 8
 
 [node name="BtnRushA" type="Button" parent="PauseOverlay/CenterContainer/VBoxContainer/StrategyButtons"]
-text = "Rush A"
+custom_minimum_size = Vector2(52, 34)
+text = "A"
 
 [node name="BtnRushB" type="Button" parent="PauseOverlay/CenterContainer/VBoxContainer/StrategyButtons"]
-text = "Rush B"
+custom_minimum_size = Vector2(52, 34)
+text = "B"
 
 [node name="BtnSplit" type="Button" parent="PauseOverlay/CenterContainer/VBoxContainer/StrategyButtons"]
-text = "Split"
+custom_minimum_size = Vector2(52, 34)
+text = "⇆"
 
 [node name="BtnDefault" type="Button" parent="PauseOverlay/CenterContainer/VBoxContainer/StrategyButtons"]
-text = "Default"
+custom_minimum_size = Vector2(52, 34)
+text = "◎"
 
 [node name="BtnEco" type="Button" parent="PauseOverlay/CenterContainer/VBoxContainer/StrategyButtons"]
-text = "Eco"
+custom_minimum_size = Vector2(52, 34)
+text = "¤"
 
 [node name="ResumeButton" type="Button" parent="PauseOverlay/CenterContainer/VBoxContainer"]
 text = "Resume (Space)"
 
-[node name="BombStatus" type="Label" parent="."]
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -150.0
-offset_right = 150.0
-offset_top = 95.0
-offset_bottom = 115.0
-text = ""
-horizontal_alignment = 1
-modulate = Color(1, 0.85, 0.1, 1)
-
-[node name="CTHealthPanel" type="VBoxContainer" parent="."]
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 10.0
-offset_right = 175.0
-offset_top = -135.0
-offset_bottom = -10.0
-
-[node name="CTH0" type="Label" parent="CTHealthPanel"]
-text = "CT_0: 100"
-modulate = Color(0.4, 0.8, 1.0, 1)
-
-[node name="CTH1" type="Label" parent="CTHealthPanel"]
-text = "CT_1: 100"
-modulate = Color(0.4, 0.8, 1.0, 1)
-
-[node name="CTH2" type="Label" parent="CTHealthPanel"]
-text = "CT_2: 100"
-modulate = Color(0.4, 0.8, 1.0, 1)
-
-[node name="CTH3" type="Label" parent="CTHealthPanel"]
-text = "CT_3: 100"
-modulate = Color(0.4, 0.8, 1.0, 1)
-
-[node name="CTH4" type="Label" parent="CTHealthPanel"]
-text = "CT_4: 100"
-modulate = Color(0.4, 0.8, 1.0, 1)
-
-[node name="THealthPanel" type="VBoxContainer" parent="."]
-anchor_left = 1.0
+[node name="ObserverPanel" type="PanelContainer" parent="."]
+visible = false
+anchor_left = 0.0
 anchor_right = 1.0
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = -175.0
-offset_right = -10.0
-offset_top = -135.0
-offset_bottom = -10.0
+offset_left = 14.0
+offset_right = -14.0
+offset_top = -202.0
+offset_bottom = -12.0
 
-[node name="TH0" type="Label" parent="THealthPanel"]
-text = "T_0: 100"
-modulate = Color(1.0, 0.6, 0.2, 1)
+[node name="ObserverRow" type="HBoxContainer" parent="ObserverPanel"]
+theme_override_constants/separation = 14
 
-[node name="TH1" type="Label" parent="THealthPanel"]
-text = "T_1: 100"
-modulate = Color(1.0, 0.6, 0.2, 1)
+[node name="CTColumn" type="VBoxContainer" parent="ObserverPanel/ObserverRow"]
+size_flags_horizontal = 3
 
-[node name="TH2" type="Label" parent="THealthPanel"]
-text = "T_2: 100"
-modulate = Color(1.0, 0.6, 0.2, 1)
+[node name="CTRosterTitle" type="Label" parent="ObserverPanel/ObserverRow/CTColumn"]
+text = "CT Observer"
+modulate = Color(0.58, 0.84, 1, 1)
 
-[node name="TH3" type="Label" parent="THealthPanel"]
-text = "T_3: 100"
-modulate = Color(1.0, 0.6, 0.2, 1)
+[node name="CTHealthPanel" type="VBoxContainer" parent="ObserverPanel/ObserverRow/CTColumn"]
 
-[node name="TH4" type="Label" parent="THealthPanel"]
-text = "T_4: 100"
-modulate = Color(1.0, 0.6, 0.2, 1)
+[node name="CTH0" type="Label" parent="ObserverPanel/ObserverRow/CTColumn/CTHealthPanel"]
+text = "CT_0"
+
+[node name="CTH1" type="Label" parent="ObserverPanel/ObserverRow/CTColumn/CTHealthPanel"]
+text = "CT_1"
+
+[node name="CTH2" type="Label" parent="ObserverPanel/ObserverRow/CTColumn/CTHealthPanel"]
+text = "CT_2"
+
+[node name="CTH3" type="Label" parent="ObserverPanel/ObserverRow/CTColumn/CTHealthPanel"]
+text = "CT_3"
+
+[node name="CTH4" type="Label" parent="ObserverPanel/ObserverRow/CTColumn/CTHealthPanel"]
+text = "CT_4"
+
+[node name="TColumn" type="VBoxContainer" parent="ObserverPanel/ObserverRow"]
+size_flags_horizontal = 3
+
+[node name="TRosterTitle" type="Label" parent="ObserverPanel/ObserverRow/TColumn"]
+text = "T Observer"
+horizontal_alignment = 2
+modulate = Color(1, 0.71, 0.34, 1)
+
+[node name="THealthPanel" type="VBoxContainer" parent="ObserverPanel/ObserverRow/TColumn"]
+
+[node name="TH0" type="Label" parent="ObserverPanel/ObserverRow/TColumn/THealthPanel"]
+text = "T_0"
+horizontal_alignment = 2
+
+[node name="TH1" type="Label" parent="ObserverPanel/ObserverRow/TColumn/THealthPanel"]
+text = "T_1"
+horizontal_alignment = 2
+
+[node name="TH2" type="Label" parent="ObserverPanel/ObserverRow/TColumn/THealthPanel"]
+text = "T_2"
+horizontal_alignment = 2
+
+[node name="TH3" type="Label" parent="ObserverPanel/ObserverRow/TColumn/THealthPanel"]
+text = "T_3"
+horizontal_alignment = 2
+
+[node name="TH4" type="Label" parent="ObserverPanel/ObserverRow/TColumn/THealthPanel"]
+text = "T_4"
+horizontal_alignment = 2

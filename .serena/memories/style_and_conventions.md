@@ -1,0 +1,13 @@
+# Style And Conventions
+- Every repo file starts with a short header comment describing purpose and dependencies.
+- Prefer signals over direct calls between major systems.
+- Variable names use English snake_case.
+- Avoid hardcoded gameplay numbers unless expressed as constants or exports.
+- Preserve deterministic runtime as the default user path; optional RL/debug/training paths must remain explicitly opt-in.
+- For tactical behavior, prefer semantic routes, authored lineups, and role-based plans over anonymous waypoint or patrol logic.
+- For map/runtime work, keep Dust2 callouts, authored routes, and tactical graph connectivity in sync; avoid reintroducing runtime navmesh baking into ordinary launch.
+- For map/runtime work, also keep plant slots, retake lanes, and bomb cover packages in sync with callouts and authored routes; planner code should not invent lane semantics outside `TacticalMap`.
+- For combat behavior, prefer authored hold arcs, cover slots, fallback routes, and explicit trade pairs over freeform scanning or nearest-target-only logic.
+- For objective behavior, prefer explicit duty packages and bomb tasks over ad-hoc intent overrides in the middle of bot micro.
+- For gunplay changes, prefer extending the deterministic combat shell with explicit weapon-state and fire-mode logic rather than replacing combat behavior with generic aim randomness.
+- Keep the default player-facing HUD compact and icon-first; reserve verbose text diagnostics and full bot summaries for observer/debug mode, and throttle observer refreshes instead of repainting them on every signal.

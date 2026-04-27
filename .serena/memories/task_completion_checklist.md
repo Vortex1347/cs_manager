@@ -1,0 +1,12 @@
+# Task Completion Checklist
+- Run at least `godot --headless --path /Users/ataiyrysbekov/Documents/GitHub/cs_manager --quit` after meaningful gameplay or script changes.
+- For combat/intel changes, also run a longer headless smoke past buy phase so footsteps, bomb routing, and live-round directives execute at least once.
+- For tactical-map changes, verify `TacticalMap` route ids, hold profiles, utility package ids, and path-graph helpers still match every `BotTeam` caller before runtime smoke.
+- For exact Dust2/bomb-objective changes, also verify plant-slot ids, retake-lane ids, bomb cover packages, and `site_target` / `bomb_task` assumptions still match `BotTeam` and `BotBrain`.
+- If runtime mode flags changed, also verify the default launch path without RL/debug companions.
+- Keep `docs/architecture.md`, `docs/process/task_log.md`, and `docs/process/decision_log.md` aligned with code changes.
+- When a major transferable bug is fixed, update `/Users/ataiyrysbekov/.codex/memories/bug_prevention.md` and at most one relevant skill.
+- For sandbox milestones, verify HUD/debug surfaces still expose plan, utility, combat, intel, and per-bot roster state clearly enough for manual observation.
+- For gunplay milestones, also verify HUD/debug surfaces expose fire mode, stabilization, and accuracy pressure clearly enough to explain why a bot did or did not shoot.
+- For performance/UX milestones, verify the default match path keeps debug surfaces hidden by default and does not rebuild heavy debug visuals unless the corresponding toggle is on.
+- For icon-first HUD changes, verify the default HUD remains readable without observer mode and that observer panels refresh on a throttled cadence rather than every signal.

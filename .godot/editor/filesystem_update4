@@ -1,10 +1,4 @@
 res://scripts/bots/bot_brain.gd
+res://scripts/bots/bot_team.gd
 res://scripts/game/game_manager.gd
-res://scripts/map/bombsite.gd
-res://scripts/weapons/weapon.gd
-res://scripts/rl/bot_observer.gd
-res://scripts/rl/rl_server.gd
-res://scenes/game/game_manager.tscn
-res://scenes/ui/hud.tscn
-res://scripts/game/round_manager.gd
-res://scripts/ui/pause_controller.gd
+res://scripts/map/tactical_map.gd
